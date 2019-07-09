@@ -1,0 +1,31 @@
+EVENTO,PROVINCIA,SUBEVENTO,ALIAS,EDAD,GENERO,PROVINCIA_USER,ESCALA,P1,P2,P3,P4,P5,P6,C1,C2,C3,C4,C5,C6,C7,E1,E2,E3,E4,E5,E6
+noche 2019, Granada, Taller MonuMAI,A1,18,Hombre,Sevilla,3,1,,,,,,3,,,,,,,-1,,,,3,-1
+noche 2019, Granada, Taller MonuMAI,A2,35,Hombre,Granada,5,5,,4,,5,,,,,-1,,,,,-5,,,1,
+noche 2019, Granada, Taller MonuMAI,A3,20,Mujer,Huelva,7,7,5,,,,,-1,,3,,,,,4,,,,,
+noche 2019, Granada, Taller MonuMAI,A4,15,Mujer,Jaen,5,,,5,,-2,,,4,,,,1,,,-1,,,-1,
+noche 2019, Granada, Taller MonuMAI,A5,16,Mujer,Almeria,7,,,,7,,,7,,,,-1,,,7,,,,-1,-1
+noche 2019, Granada, Taller MonuMAI,A6,31,Hombre,Cordoba,3,3,,3,,,3,3,,,,,,,3,,,,,
+noche 2019, Granada, Taller MonuMAI,A7,32,Hombre,Cadiz,5,-5,,,-5,,,-5,,,-5,,,,-5,,,,,
+noche 2019,Granada,Taller Urano,A8,30,Mujer,Madrid,7,5,,7,,7,7,,7,,,,2,,,1,,,,
+noche 2019,Granada,Taller Urano,A9,30,Mujer,Toledo,5,5,5,5,5,5,5,1,,,,,,,1,,,,,
+noche 2019,Granada,Taller Urano,A10,29,Mujer,Sevilla,7,3,,-1,,,,,5,,,5,,,1,,,,,
+noche 2019,Granada,Taller Urano,A11,28,Hombre,Granada,3,1,,,,,1,1,,,1,,,,,,,,,-2
+noche 2019,Granada,Taller Urano,A12,35,Hombre,Huelva,5,,,1,,,,5,,,-3,,-1,,,,,,,-1
+noche 2019,Sevilla,Taller MonuMAI,A13,36,Mujer,Jaen,7,7,,,,,,3,5,,6,,,,1,,,,,-1
+noche 2019,Sevilla,Taller MonuMAI,A14,36,Mujer,Almeria,5,5,5,,,,,5,5,,,,,,5,5,,,,
+noche 2019,Sevilla,Taller MonuMAI,A15,35,Mujer,Cordoba,7,7,,-1,,-1,,7,,,6,,,6,1,,,1,,-1
+noche 2019,Jaen,Taller MonuMAI,A16,39,Hombre,Cadiz,3,3,1,3,2,2,2,3,1,1,-1,1,3,-1,1,1,,,-3,-3
+noche 2019,Jaen,Taller MonuMAI,A17,40,Hombre,Madrid,5,5,,5,5,,5,4,,4,4,,,-1,1,2,,,-4,-4
+noche 2019,Jaen,Taller MonuMAI,A18,44,Mujer,Toledo,7,7,,5,,,,7,,,3,,,,7,,,,,
+noche 2019,Jaen,Taller MonuMAI,A19,43,Mujer,Sevilla,5,5,5,5,,,,,5,5,,,,,5,5,,,5,
+noche 2019,Jaen,Taller MonuMAI,A20,43,Mujer,Granada,7,,7,7,,,,7,7,7,,,,,7,,,,,
+noche 2019,Jaen,Taller MonuMAI,A21,20,Hombre,Huelva,3,3,,,,,,3,,,,-1,,,3,,,,,-1
+noche 2019,Cordoba,Taller MonuMAI,A22,31,Hombre,Jaen,5,5,,5,,,,5,,,,,,,5,5,,,,
+noche 2019,Cordoba,Taller MonuMAI,A23,19,Mujer,Almeria,7,5,,7,,7,7,,7,,,,2,,,1,,,,
+noche 2019,Cordoba,Taller MonuMAI,A24,19,Mujer,Cordoba,5,5,5,5,5,5,5,1,,,,,,,1,,,,,
+noche 2019,Cordoba,Taller MonuMAI,A25,60,Mujer,Cadiz,7,3,,-1,,,,,5,,,5,,,1,,,,,
+noche 2019,Cordoba,Taller MonuMAI,A26,32,Hombre,Madrid,3,1,,,,,1,1,,,1,,,,,,,,,-2
+noche 2019,Cordoba,Taller MonuMAI,A27,20,Hombre,Toledo,5,,,1,,,,5,,,-3,,-1,,,,,,,-1
+noche 2019,Cordoba,Taller MonuMAI,A28,20,Mujer,Sevilla,7,7,,,,,,3,5,,6,,,,1,,,,,-1
+noche 2019,Cordoba,Taller MonuMAI,A29,15,Mujer,Granada,5,5,5,,,,,5,5,,,,,,5,5,,,,
+noche 2019,Cordoba,Taller MonuMAI,A30,56,Mujer,Huelva,7,7,,-1,,-1,,7,,,6,,,6,1,,,,,-1
