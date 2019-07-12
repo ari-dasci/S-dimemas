@@ -1,44 +1,51 @@
 import pandas as pd
-import collections as clns
 import numpy as np
 
-"Se carga el archivo csv con los datos de las evaluaciones"
-"datos = pd.read_csv('La_noche_2019.csv', index_col=0)"
-datos = pd.read_csv('La_noche_2019_normalizado.csv', index_col=0)
 
-"Se calcula el número total de criterios evaluados, de todas las dimensiones y de todos los eventos"
-conteo = datos.iloc[:,6:].count(0)
-totales = sum(conteo)
-print(totales)
+#Se carga el archivo csv con los datos de las evaluaciones
+datos = pd.read_csv('La_noche_2019_normalizado.csv', delimiter=',')
+#print(datos)
 
-"Se crea el vector con los pesos de cada criterio basandonos en el porcentaje de participación de cada criterio con respecto al total"
-peso = conteo/totales
-"la suma de los pesos debe ser igual a 1"
-"print(sum(peso))"
+#Se crea un array con el número total que cada criterio fue evaluado tpc-> total por criterio
+tpc = datos.iloc[:,7:].count()
+#print(tpc)
 
-"___________________________________________________________________________________________________"
+#Se obtiene el número total de criterios evaluados dentro del DataFrame. total -> Todos los criterios evaluados.
+total = tpc.sum()
 
-"h = ((((datos.iloc[:,6:].abs()-1)*12)/2)+1)"
-"h = ((((datos.iloc[:,6:].abs()-1)*12)/4)+1)"
-"h = ((((datos.iloc[:,6:].abs()-1)*12)/6)+1)"
+#Se crea un array con los pesos que tendrá cada criterio. pesos = tpc/total
+pesos = tpc/total
+#print(pesos)
+#la suma de los pesos debe ser igual a 1
+#print(sum(pesos))
 
-"___________________________________________________________________________________________________"
+#___________________________________________________________________________________________________
 
-"Se agrupan todas las valoraciones por provincia y por subevento"
+#h = ((((datos.iloc[:,6:].abs()-1)*12)/2)+1)
+#h = ((((datos.iloc[:,6:].abs()-1)*12)/4)+1)
+#h = ((((datos.iloc[:,6:].abs()-1)*12)/6)+1)
+
+#___________________________________________________________________________________________________
+
+#Se agrupan todas las valoraciones por provincia y por subevento
 event1 = datos[(datos.PROVINCIA == 'Granada') & (datos.SUBEVENTO == 'TallerMonuMAI')]
 event2 = datos[(datos.PROVINCIA == 'Granada') & (datos.SUBEVENTO == 'TallerUrano')]
 event3 = datos[(datos.PROVINCIA == 'Sevilla') & (datos.SUBEVENTO == 'TallerMonuMAI')]
 event4 = datos[(datos.PROVINCIA == 'Jaen') & (datos.SUBEVENTO == 'TallerMonuMAI')]
 event5 = datos[(datos.PROVINCIA == 'Cordoba') & (datos.SUBEVENTO == 'TallerMonuMAI')]
-"print(event3)"
+#print(event1.iloc[:,7:])
 
-"___________________________________________________________________________________________________"
+#se calculan los promedios de cada criterio.
+med1 = event1.iloc[:,7:].mean()
+med2 = event2.iloc[:,7:].mean()
+med3 = event3.iloc[:,7:].mean()
+med4 = event4.iloc[:,7:].mean()
+med5 = event5.iloc[:,7:].mean()
+#print(med5)
 
-"Se hace el conteo de los elementos evaluados en cada subevento"
-cont_e1 = event1.iloc[:,6:].abs().count(0)
-print(cont_e1)
 
-
+#d = np.sqrt(med1)
+#print(d)
 
 
 
