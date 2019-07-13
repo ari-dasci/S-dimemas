@@ -20,7 +20,7 @@ pesos = tpc/total
 #print(sum(pesos))
 
 #___________________________________________________________________________________________________
-
+#Pendiente
 #h = ((((datos.iloc[:,6:].abs()-1)*12)/2)+1)
 #h = ((((datos.iloc[:,6:].abs()-1)*12)/4)+1)
 #h = ((((datos.iloc[:,6:].abs()-1)*12)/6)+1)
@@ -71,11 +71,52 @@ tmxij = mxij.transpose()
 #Se ontiene una nueva matriz (wxij) con cada uno de los criterios multiplicado por su peso.
 wxij = tmxij * pesos
 
-#Para obtener el primer ranking, se suman/restan los valores de cada criterio por evento.
-ranking1 = wxij.sum(axis = 1)
+#Para obtener el primer ranking (RS), se suman/restan los valores de cada criterio por evento.
+#En éste caso, todos son positivos, si existiera un negativo, ese valor se restaría.
+#ejemplo crit_pos + crit_pos - crit_neg + crit_pos + crit_pos - crit_neg
+rs = wxij.sum(axis = 1)
 #Se el agrega una nueva columna con el array de los filtros.
-r1 = pd.concat([ranking1, nwcol], axis=1)
+rs1 = pd.concat([rs, nwcol], axis=1)
 #Se ordenan los eventos de mayor a menor, por los datos de la variable ranking1
-r11 = r1.sort_index(by = 0, ascending= False)
+r11 = rs1.sort_values(by = 0, ascending= False)
+
+#De la matriz mxij se extraen los valores máximos y mínimos, con el se crea un vector. En éste caso todos son positivos.
+maximos = mxij.transpose().max()
+#Si existieran criterios negativos, entonces el array seria mixto, donde los criterios positivos son los máximos y los
+#criterios negativos mínimos.
+#minimos = mxij.transpose().min()
+#print(minimos)
+
+
+#Se multiplica el máximo/minimo de cada criterio por su peso (peso)
+wrj = pesos * maximos
+
+#Para calcular el segundo ranking (RPA), a cada criterio, se le resta el valor del maximo/minimo multiplicado por el peso (wrj)
+rpa = wxij - wrj
+#Se genera un array con los valores máximos de cada evento
+rpa2 = rpa.abs().transpose().max()
+#Se el agrega una nueva columna con el array de los filtros.
+rpa22 = pd.concat([rpa2, nwcol], axis=1)
+#Se ordenan los eventos de menor a mayor, por los datos de la variable r22
+rpa222 = rpa22.sort_values(by = 0, ascending= True)
+#print(r222)
+
+#Se toma cada criterio de la matriz mxij, y se eleva a una potencia que es igual al peso de cada criterio.
+#Es decir criterio ^ peso_criterio.
+xijpw = mxij.transpose() ** pesos
+print(xijpw)
+
+#Para el tercer ranking(fmf), por cada evento, los criterios positivos, se multiplican, y los criterios negativos se dividen
+#Ejemplo: crit_pos * crit_pos / crit_neg * crit_pos * crit_pos / crit_neg.
+#En éste ejemplo todos son positivos, por eso todos se multiplican
+fmf = np.prod(xijpw.transpose())
+#Se el agrega una nueva columna con el array de los filtros.
+fmf3 = pd.concat([fmf, nwcol], axis=1)
+fmf33 = fmf3.sort_values(by = 0, ascending= False)
+print(fmf33)
+
+#Para sacar la mejor opcion utilizando el método Rank Position Method (RPM), se haran los siguientes cálculos
+#Primero tomamos todos los rankings por evento (RS, RPA, FMF), sin ordenar y creamos una matriz.
+
 
 
