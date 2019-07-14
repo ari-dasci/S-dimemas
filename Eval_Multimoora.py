@@ -152,9 +152,10 @@ x4 = rpm4[(rpm4['subvento']== nwcol[4])]
 
 #xx = 1/(1/x.iloc[0,2] + 1/x.iloc[1,2] + 1/x.iloc[2,2])
 #print(rpm4)
-rpm = {'subevento'}
+#rpm = {'subevento'}
 
-x5 = [(nwcol[0],1/(1/x.iloc[0,2] + 1/x.iloc[1,2] + 1/x.iloc[2,2])]
+print(x)
+x5 = 1/(1/x.iloc[0,2] + 1/x.iloc[1,2] + 1/x.iloc[2,2])
 #a = 1/(1/rpm4[0] + 1/rpm4[1] + 1/rpm4[2])
 print(x5)
 #print(x1.iloc[0,2])
