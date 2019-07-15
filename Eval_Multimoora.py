@@ -208,5 +208,35 @@ imb222['u_i'] = imb['u_i']/np.sqrt(vimb22['u_i'])
 #son evaluados
 m = nwcol.count()
 #Se calcula el valor del denominador en la fórmula para calcular el IMB
-m = m*(m+1)/2
+m1 = m*(m+1)/2
 
+#Se estraen los rankings numericos  x.iloc[0,2], x.iloc[1,2], x.iloc[2,2]
+#Se extraen los índices imb222.iloc[0,1], imb222.iloc[0,2], imb222.iloc[0,3]
+y = imb222.iloc[0,1] * (m-x.iloc[0,2]+1)/m1 - imb222.iloc[0,2] * (x.iloc[1,2])/m1 + imb222.iloc[0,3] * (m-x.iloc[2,2]+1)/m1
+y1 = imb222.iloc[1,1] * (m-x1.iloc[0,2]+1)/m1 - imb222.iloc[1,2] * (x1.iloc[1,2])/m1 + imb222.iloc[1,3] * (m-x1.iloc[2,2]+1)/m1
+y2 = imb222.iloc[2,1] * (m-x2.iloc[0,2]+1)/m1 - imb222.iloc[2,2] * (x2.iloc[1,2])/m1 + imb222.iloc[2,3] * (m-x2.iloc[2,2]+1)/m1
+y3 = imb222.iloc[3,1] * (m-x3.iloc[0,2]+1)/m1 - imb222.iloc[3,2] * (x3.iloc[1,2])/m1 + imb222.iloc[3,3] * (m-x3.iloc[2,2]+1)/m1
+y4 = imb222.iloc[4,1] * (m-x4.iloc[0,2]+1)/m1 - imb222.iloc[4,2] * (x4.iloc[1,2])/m1 + imb222.iloc[4,3] * (m-x4.iloc[2,2]+1)/m1
+#print(y1)
+
+rimb = pd.DataFrame({
+    'subevento':[nwcol[0],nwcol[1],nwcol[2],nwcol[3],nwcol[4]],
+    'indice':[y,y1,y2,y3,y4]},
+    columns = ['subevento','indice']
+)
+
+#Se ordenan los elementos de la matriz de mayor a menor
+rimb = rimb.sort_values(by = 'indice', ascending = False)
+#Con ésta funcíon se reordenan los índices para que empiece de 0
+rimb = rimb.reset_index(drop=True)
+#Se le agrega la columna ranking, con base en los índices reordenados
+rimb.insert(len(rimb.columns),'ranking IMB', range(len(rimb)))
+#Se le suma 1 para que el ranking empice en 1.
+rimb['ranking IMB'] = rimb['ranking IMB']+1
+#print(rimb)
+#-----------------------------------------------------------------------------------------------------------------------
+print('Rank Position Method (RPM)')
+print(rpm1)
+print()
+print( 'Improved Borda Rule(IMB)')
+print(rimb)
