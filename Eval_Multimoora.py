@@ -65,7 +65,7 @@ s_cuad = sc.sum(axis = 1)
 #raiz cuadrada de la suma de los cuadarados de los valores de ese criterio.
 #valor-criterio/suma de todos los valor-criterio^2
 mxij = med1/ np.sqrt(s_cuad)
-#Se genera la matriz mxij
+#Se genera la matriz mxij concatenando los demás eventos utilizando la fórmula anterior
 mxij = pd.concat([mxij,med2/np.sqrt(s_cuad),med3/np.sqrt(s_cuad),med4/np.sqrt(s_cuad),med5/np.sqrt(s_cuad)], axis = 1)
 #print(mxij)
 
@@ -126,7 +126,8 @@ rpa222['ranking'] = rpa222['ranking']+1
 xijpw = mxij.transpose() ** pesos
 #print(xijpw)
 
-#Para el tercer ranking(fmf), por cada evento, los criterios positivos, se multiplican, y los criterios negativos se dividen
+#Para el tercer ranking(fmf), se utiliza la matrix generada "xijpw", por cada evento, los criterios positivos,
+#se multiplican, y los criterios negativos se dividen
 #Ejemplo: crit_pos * crit_pos / crit_neg * crit_pos * crit_pos / crit_neg.
 #En éste ejemplo todos son positivos, por eso todos se multiplican
 fmf = np.prod(xijpw.transpose())
@@ -180,8 +181,9 @@ rpm1.insert(len(rpm1.columns),'ranking RPM', range(len(rpm1)))
 #Se le suma 1 para que el ranking empice en 1.
 rpm1['ranking RPM'] = rpm1['ranking RPM']+1
 #print(rpm1)
+
 #-----------------------------------------------------------------------------------------------------------------------
-#Para sacar la mejor opción utilizando el método Improved Borda Rule(IMB) se realizan las siguientes operaciones
+#Para sacar la mejor opción utilizando el método Improved Borda Rule(IMB) se realizan las siguientes operaciones:
 #Primero se crea una nueva matriz con todos los índices generados en RS(y_i), RPA(z_i), FMF(u_i).
 
 imb = pd.DataFrame({
@@ -204,14 +206,14 @@ imb222['z_i'] = imb['z_i']/np.sqrt(vimb22['z_i'])
 imb222['u_i'] = imb['u_i']/np.sqrt(vimb22['u_i'])
 #print(imb222)
 
-#Se asigna a una variable el número de posiciones que integran los rankings, que es igaul al número de subeventos que
+#Se asigna a una variable el número de posiciones que integran los rankings, que es igual al número de subeventos que
 #son evaluados
 m = nwcol.count()
 #Se calcula el valor del denominador en la fórmula para calcular el IMB
 m1 = m*(m+1)/2
 
-#Se estraen los rankings numericos  x.iloc[0,2], x.iloc[1,2], x.iloc[2,2]
-#Se extraen los índices imb222.iloc[0,1], imb222.iloc[0,2], imb222.iloc[0,3]
+#Se estraen los rankings numericos  de cada evento. Ejemplo: x.iloc[0,2], x.iloc[1,2], x.iloc[2,2]
+#Se extraen los índices de cada evento. Ejemplo: imb222.iloc[0,1], imb222.iloc[0,2], imb222.iloc[0,3]
 y = imb222.iloc[0,1] * (m-x.iloc[0,2]+1)/m1 - imb222.iloc[0,2] * (x.iloc[1,2])/m1 + imb222.iloc[0,3] * (m-x.iloc[2,2]+1)/m1
 y1 = imb222.iloc[1,1] * (m-x1.iloc[0,2]+1)/m1 - imb222.iloc[1,2] * (x1.iloc[1,2])/m1 + imb222.iloc[1,3] * (m-x1.iloc[2,2]+1)/m1
 y2 = imb222.iloc[2,1] * (m-x2.iloc[0,2]+1)/m1 - imb222.iloc[2,2] * (x2.iloc[1,2])/m1 + imb222.iloc[2,3] * (m-x2.iloc[2,2]+1)/m1
@@ -219,6 +221,7 @@ y3 = imb222.iloc[3,1] * (m-x3.iloc[0,2]+1)/m1 - imb222.iloc[3,2] * (x3.iloc[1,2]
 y4 = imb222.iloc[4,1] * (m-x4.iloc[0,2]+1)/m1 - imb222.iloc[4,2] * (x4.iloc[1,2])/m1 + imb222.iloc[4,3] * (m-x4.iloc[2,2]+1)/m1
 #print(y1)
 
+#Se crea un data frame con los subeventos y los nuevos índices generados con las operaciones anteriores.
 rimb = pd.DataFrame({
     'subevento':[nwcol[0],nwcol[1],nwcol[2],nwcol[3],nwcol[4]],
     'indice':[y,y1,y2,y3,y4]},
