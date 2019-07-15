@@ -36,7 +36,8 @@ event5 = datos[(datos.PROVINCIA == 'Cordoba') & (datos.SUBEVENTO == 'TallerMonuM
 #print(event1.iloc[:,7:])
 #Crea un nuevo array con la concatenación de las cadenas que filtraron a cada evento
 #Para que sirvan como las etiquetas de cada subevento
-nwcol = pd.Series(['Granada-Taller MonuMAI','Granada-Taller Urano','Sevilla-Taller MonuMAI','Jaen-Taller MonuMAI','Cordoba-Taller MonuMAI'], name='subvento')
+nwcol = pd.Series(['Granada-Taller MonuMAI','Granada-Taller Urano','Sevilla-Taller MonuMAI','Jaen-Taller MonuMAI',
+                   'Cordoba-Taller MonuMAI'], name='subvento')
 
 #se hace el filtro por criterios y se calculan las medias aritméticas de cada criterio por cada subevento.
 med1 = event1.iloc[:,7:].mean()
@@ -139,23 +140,45 @@ fmf33.insert(len(fmf33.columns),'ranking', range(len(fmf33)))
 fmf33['ranking'] = fmf33['ranking']+1
 #print(fmf33)
 
-#Para sacar la mejor opcion utilizando el método Rank Position Method (RPM), se haran los siguientes cálculos
-#Primero tomamos todos los rankings por evento (RS, RPA, FMF), sin ordenar y creamos una matriz.
-#rpm = rs
-rpm4 = pd.concat([rs11,rpa222,fmf33], axis = 0)
+#-----------------------------------------------------------------------------------------------------------------------
+#Para sacar la mejor opcion utilizando el método Rank Position Method (RPM), se haran los siguientes cálculos:
+#Primero tomamos todos los rankings por evento (RS, RPA, FMF), y creamos una matriz.
 
-x = rpm4[(rpm4['subvento']== nwcol[0])]
-x1 = rpm4[(rpm4['subvento']== nwcol[1])]
-x2 = rpm4[(rpm4['subvento']== nwcol[2])]
-x3 = rpm4[(rpm4['subvento']== nwcol[3])]
-x4 = rpm4[(rpm4['subvento']== nwcol[4])]
+rpm = pd.concat([rs11,rpa222,fmf33], axis = 0)
 
-#xx = 1/(1/x.iloc[0,2] + 1/x.iloc[1,2] + 1/x.iloc[2,2])
-#print(rpm4)
-#rpm = {'subevento'}
+#Se crean una matriz con los datos filtrados por subevento, la matriz tiene el índice y el ranking que obtuvo por ese
+#índice
+x = rpm[(rpm['subvento']== nwcol[0])]
+x1 = rpm[(rpm['subvento']== nwcol[1])]
+x2 = rpm[(rpm['subvento']== nwcol[2])]
+x3 = rpm[(rpm['subvento']== nwcol[3])]
+x4 = rpm[(rpm['subvento']== nwcol[4])]
+#print(x)
 
-print(x)
-x5 = 1/(1/x.iloc[0,2] + 1/x.iloc[1,2] + 1/x.iloc[2,2])
-#a = 1/(1/rpm4[0] + 1/rpm4[1] + 1/rpm4[2])
-print(x5)
-#print(x1.iloc[0,2])
+#Se calculan los nuevos índices tomando la posición que cada subevento tuvo en los ranking rs, rpa, fmf
+xx = 1/(1/x.iloc[0,2] + 1/x.iloc[1,2] + 1/x.iloc[2,2])
+xx1 = 1/(1/x1.iloc[0,2] + 1/x1.iloc[1,2] + 1/x1.iloc[2,2])
+xx2 = 1/(1/x2.iloc[0,2] + 1/x2.iloc[1,2] + 1/x2.iloc[2,2])
+xx3 = 1/(1/x3.iloc[0,2] + 1/x3.iloc[1,2] + 1/x3.iloc[2,2])
+xx4 = 1/(1/x4.iloc[0,2] + 1/x4.iloc[1,2] + 1/x4.iloc[2,2])
+#print(xx)
+
+#Se crea un nuevo dataframe con los índices de cada sub evento
+rpm1 = pd.DataFrame({
+    'subevento':[nwcol[0],nwcol[1],nwcol[2],nwcol[3],nwcol[4]],
+    'indice':[xx,xx1,xx2,xx3,xx4]}, columns = ['subevento','indice']
+)
+
+#Se ordenan los elementos de la matriz de menor a mayor
+rpm1 = rpm1.sort_values(by = 'indice', ascending = True)
+#Con ésta funcíon se reordenan los índices para que empiece de 0
+rpm1 = rpm1.reset_index(drop=True)
+#Se le agrega la columna ranking, con base en los índices reordenados
+rpm1.insert(len(rpm1.columns),'ranking RPM', range(len(rpm1)))
+#Se le suma 1 para que el ranking empice en 1.
+rpm1['ranking RPM'] = rpm1['ranking RPM']+1
+#print(rpm1)
+#-----------------------------------------------------------------------------------------------------------------------
+
+
+print(sc)
