@@ -61,9 +61,11 @@ sc = pd.concat([sc,e2,e3,e4,e5],axis = 1)
 s_cuad = sc.sum(axis = 1)
 #print(s_cuad)
 
-#Se calcula la Matriz x_ij^* , tomando cada criterio y dividiendolo entre el valor de la
-# raiz cuadrada de la suma de los cuadarados de ese criterio. mxij
+#Se calcula la Matriz x_ij^* , tomando cada valor del criterio y dividiendolo entre la
+#raiz cuadrada de la suma de los cuadarados de los valores de ese criterio.
+#valor-criterio/suma de todos los valor-criterio^2
 mxij = med1/ np.sqrt(s_cuad)
+#Se genera la matriz mxij
 mxij = pd.concat([mxij,med2/np.sqrt(s_cuad),med3/np.sqrt(s_cuad),med4/np.sqrt(s_cuad),med5/np.sqrt(s_cuad)], axis = 1)
 #print(mxij)
 
@@ -94,9 +96,8 @@ rs11['ranking'] = rs11['ranking']+1
 #De la matriz mxij se extraen los valores máximos y mínimos, con el se crea un vector. En éste caso todos son positivos.
 maximos = mxij.transpose().max()
 #Si existieran criterios negativos, entonces el array seria mixto, donde los criterios positivos son los máximos y los
-#criterios negativos mínimos.
-#minimos = mxij.transpose().min()
-#print(minimos)
+#criterios negativos los mínimos.
+
 
 
 #Se multiplica el máximo/minimo de cada criterio por su peso (peso)
@@ -166,7 +167,8 @@ xx4 = 1/(1/x4.iloc[0,2] + 1/x4.iloc[1,2] + 1/x4.iloc[2,2])
 #Se crea un nuevo dataframe con los índices de cada sub evento
 rpm1 = pd.DataFrame({
     'subevento':[nwcol[0],nwcol[1],nwcol[2],nwcol[3],nwcol[4]],
-    'indice':[xx,xx1,xx2,xx3,xx4]}, columns = ['subevento','indice']
+    'indice':[xx,xx1,xx2,xx3,xx4]},
+    columns = ['subevento','indice']
 )
 
 #Se ordenan los elementos de la matriz de menor a mayor
@@ -179,6 +181,32 @@ rpm1.insert(len(rpm1.columns),'ranking RPM', range(len(rpm1)))
 rpm1['ranking RPM'] = rpm1['ranking RPM']+1
 #print(rpm1)
 #-----------------------------------------------------------------------------------------------------------------------
+#Para sacar la mejor opción utilizando el método Improved Borda Rule(IMB) se realizan las siguientes operaciones
+#Primero se crea una nueva matriz con todos los índices generados en RS(y_i), RPA(z_i), FMF(u_i).
 
+imb = pd.DataFrame({
+    'subevento':[nwcol[0],nwcol[1],nwcol[2],nwcol[3],nwcol[4]],
+    'y_i':[x.iloc[0,0],x1.iloc[0,0],x2.iloc[0,0],x3.iloc[0,0],x4.iloc[0,0]],
+    'z_i':[x.iloc[1,0],x1.iloc[1,0],x2.iloc[1,0],x3.iloc[1,0],x4.iloc[1,0]],
+    'u_i':[x.iloc[2,0],x1.iloc[2,0],x2.iloc[2,0],x3.iloc[2,0],x4.iloc[2,0]]},
+    columns = ['subevento','y_i','z_i','u_i']
+)
 
-print(sc)
+#Se elevan al cuadrado todos los elementos de los índices
+vimb2 = np.square(imb.iloc[0:,1:])
+#Se obtiene un array con la suma de los cuadrados de cada índice
+vimb22 =  vimb2.sum(axis=0)
+#Se crea la matriz normalizada,tomando cada índice y dividiendolo entre la
+# raiz cuadrada de la suma de los cuadarados de ese índice. indice/suma de todos los indice^2
+imb222 = imb
+imb222['y_i'] = imb['y_i']/np.sqrt(vimb22['y_i'])
+imb222['z_i'] = imb['z_i']/np.sqrt(vimb22['z_i'])
+imb222['u_i'] = imb['u_i']/np.sqrt(vimb22['u_i'])
+#print(imb222)
+
+#Se asigna a una variable el número de posiciones que integran los rankings, que es igaul al número de subeventos que
+#son evaluados
+m = nwcol.count()
+#Se calcula el valor del denominador en la fórmula para calcular el IMB
+m = m*(m+1)/2
+
