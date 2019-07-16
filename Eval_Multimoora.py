@@ -20,10 +20,11 @@ pesos = tpc/total
 #print(sum(pesos))
 
 #___________________________________________________________________________________________________
-#Pendiente
-#h = ((((datos.iloc[:,6:].abs()-1)*12)/2)+1)
-#h = ((((datos.iloc[:,6:].abs()-1)*12)/4)+1)
-#h = ((((datos.iloc[:,6:].abs()-1)*12)/6)+1)
+#Pendiente la normalización de los datos a una sola escala
+#pero se usaría estas operaciones
+#escala3 = ((((datos.iloc[:,6:].abs()-1)*12)/2)+1)
+#escala5 = ((((datos.iloc[:,6:].abs()-1)*12)/4)+1)
+#escala7 = ((((datos.iloc[:,6:].abs()-1)*12)/6)+1)
 
 #___________________________________________________________________________________________________
 
