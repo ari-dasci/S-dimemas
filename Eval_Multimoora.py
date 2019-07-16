@@ -244,3 +244,8 @@ print(rpm1)
 print()
 print( 'Improved Borda Rule(IMB)')
 print(rimb)
+#-----------------------------------------------------------------------------------------------------------------------
+#Se exporta el DataFrame con el índice Rank Position Method (RPM) a un archivo csv
+rpm1.to_csv('indice_RPM.csv', header = True, index = False)
+#Se exporta el DataFrame con el índice Improved Borda Rule(IMB) a un archivo csv
+rimb.to_csv('indice_IMB.csv', header = True, index = False)
