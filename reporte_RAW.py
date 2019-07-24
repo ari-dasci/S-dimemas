@@ -4,6 +4,7 @@ from pylab import *
 import matplotlib.pyplot as plt
 
 #Se carga el archivo csv con los datos de las evaluaciones
+#Éste archivo ya está normalizado, solo está pendiente el paso para normalizar.
 datos1 = pd.read_csv('La_noche_2019_normalizado.csv', delimiter=',')
 #print(datos)
 

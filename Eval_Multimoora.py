@@ -3,17 +3,20 @@ import numpy as np
 
 
 #Se carga el archivo csv con los datos de las evaluaciones
+#Éste archivo ya está normalizado, solo está pendiente el paso para normalizar.
 datos = pd.read_csv('La_noche_2019_normalizado.csv', delimiter=',')
 #print(datos)
 
-#Se crea un array con el número total que cada criterio fue evaluado tpc-> total por criterio
+#Se crea un array con el número total de veces que cada criterio fue evaluado tpc-> total por criterio
 tpc = datos.iloc[:,7:].count()
 #print(tpc)
 
-#Se obtiene el número total de criterios evaluados dentro del DataFrame. total -> Todos los criterios evaluados.
+#Se obtiene el número total de veces que todos los criterios fueron evaluados dentro del DataFrame.
+# total -> Todos los criterios evaluados.
 total = tpc.sum()
 
 #Se crea un array con los pesos que tendrá cada criterio. pesos = tpc/total
+#En éste punto solo se está considerando un paraámetro para los pesos.
 pesos = tpc/total
 #print(pesos)
 #la suma de los pesos debe ser igual a 1
@@ -29,6 +32,7 @@ pesos = tpc/total
 #___________________________________________________________________________________________________
 
 #Se agrupan todas las valoraciones por provincia y por subevento
+#Para el ejemplo, ya se tienen las provincias y subeventos. Que se puede cambiar a evento y actividades.
 event1 = datos[(datos.PROVINCIA == 'Granada') & (datos.SUBEVENTO == 'TallerMonuMAI')]
 event2 = datos[(datos.PROVINCIA == 'Granada') & (datos.SUBEVENTO == 'TallerUrano')]
 event3 = datos[(datos.PROVINCIA == 'Sevilla') & (datos.SUBEVENTO == 'TallerMonuMAI')]
@@ -36,11 +40,11 @@ event4 = datos[(datos.PROVINCIA == 'Jaen') & (datos.SUBEVENTO == 'TallerMonuMAI'
 event5 = datos[(datos.PROVINCIA == 'Cordoba') & (datos.SUBEVENTO == 'TallerMonuMAI')]
 #print(event1.iloc[:,7:])
 #Crea un nuevo array con la concatenación de las cadenas que filtraron a cada evento
-#Para que sirvan como las etiquetas de cada subevento
+#Para que sirvan como las etiquetas de cada evento y actividad, mas adelante se usa para etiquetar los rankings
 nwcol = pd.Series(['Granada-Taller MonuMAI','Granada-Taller Urano','Sevilla-Taller MonuMAI','Jaen-Taller MonuMAI',
                    'Cordoba-Taller MonuMAI'], name='subvento')
 
-#se hace el filtro por criterios y se calculan las medias aritméticas de cada criterio por cada subevento.
+#se hace el filtro solo por criterios y se calculan las medias aritméticas de cada criterio por cada subevento.
 med1 = event1.iloc[:,7:].mean()
 med2 = event2.iloc[:,7:].mean()
 med3 = event3.iloc[:,7:].mean()
@@ -48,7 +52,8 @@ med4 = event4.iloc[:,7:].mean()
 med5 = event5.iloc[:,7:].mean()
 #print(med5)
 
-#se calcula el cuadrado de cada elemento del array de las medias de cada subevento. e
+#se calcula el cuadrado de cada elemento del array, que son las medias de cada subevento.
+#ejemplo med1[1:1]**
 e1 = np.square(med1)
 e2 = np.square(med2)
 e3 = np.square(med3)
