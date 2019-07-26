@@ -7,6 +7,14 @@ import numpy as np
 datos = pd.read_csv('La_noche_2019_normalizado.csv', delimiter=',')
 #print(datos)
 
+#___________________________________________________________________________________________________
+#Pendiente la normalización de los datos a una sola escala
+#pero se usaría estas operaciones
+#escala3 = ((((datos.iloc[:,6:].abs()-1)*12)/2)+1)
+#escala5 = ((((datos.iloc[:,6:].abs()-1)*12)/4)+1)
+#escala7 = ((((datos.iloc[:,6:].abs()-1)*12)/6)+1)
+#___________________________________________________________________________________________________
+
 #Se crea un array con el número total de veces que cada criterio fue evaluado tpc-> total por criterio
 tpc = datos.iloc[:,7:].count()
 #print(tpc)
@@ -22,14 +30,6 @@ pesos = tpc/total
 #la suma de los pesos debe ser igual a 1
 #print(sum(pesos))
 
-#___________________________________________________________________________________________________
-#Pendiente la normalización de los datos a una sola escala
-#pero se usaría estas operaciones
-#escala3 = ((((datos.iloc[:,6:].abs()-1)*12)/2)+1)
-#escala5 = ((((datos.iloc[:,6:].abs()-1)*12)/4)+1)
-#escala7 = ((((datos.iloc[:,6:].abs()-1)*12)/6)+1)
-
-#___________________________________________________________________________________________________
 
 #Se agrupan todas las valoraciones por provincia y por subevento
 #Para el ejemplo, ya se tienen las provincias y subeventos. Que se puede cambiar a evento y actividades.
