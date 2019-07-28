@@ -13,6 +13,8 @@ datos = pd.read_csv('La_noche_2019_normalizado.csv', delimiter=',')
 #escala3 = ((((datos.iloc[:,6:].abs()-1)*12)/2)+1)
 #escala5 = ((((datos.iloc[:,6:].abs()-1)*12)/4)+1)
 #escala7 = ((((datos.iloc[:,6:].abs()-1)*12)/6)+1)
+
+#Pendiente el vector de beneficio/costo
 #___________________________________________________________________________________________________
 
 #Se crea un array con el número total de veces que cada criterio fue evaluado tpc-> total por criterio
@@ -29,6 +31,7 @@ pesos = tpc/total
 #print(pesos)
 #la suma de los pesos debe ser igual a 1
 #print(sum(pesos))
+
 
 
 #Se agrupan todas las valoraciones por provincia y por subevento
@@ -82,8 +85,9 @@ tmxij = mxij.transpose()
 wxij = tmxij * pesos
 
 
-#Para obtener el primer ranking (RS), se suman/restan los valores de cada criterio por evento.
+#Para obtener el primer ranking (RS), se suman los criterios de beneficio o restan los criterios de costo por evento.
 #En éste caso, todos son positivos, si existiera un negativo, ese valor se restaría.
+#Aqui se aplicaría el array de Beneficio / Costo, que está pendiente por implementar.
 #ejemplo crit_pos + crit_pos - crit_neg + crit_pos + crit_pos - crit_neg
 rs = wxij.sum(axis = 1)
 #Se el agrega una nueva columna con el array de los filtros.
@@ -100,18 +104,21 @@ rs11['ranking'] = rs11['ranking']+1
 
 
 #De la matriz mxij se extraen los valores máximos y mínimos, con el se crea un vector. En éste caso todos son positivos.
+#Aqui tambien se utilizaría el vector de Beneficio / Costo para obtener los máximos y mínimos. Falta implementar
 maximos = mxij.transpose().max()
 #Si existieran criterios negativos, entonces el array seria mixto, donde los criterios positivos son los máximos y los
 #criterios negativos los mínimos.
 
 
 
-#Se multiplica el máximo/minimo de cada criterio por su peso (peso)
+#Para calcular el array de referencia, tomaremos los valores máximos de cada criterio que es beneficio y
+#los mínimos de costo, ayudandonos del vector beneficio, costo, y los multiplicaremos por el peso que cada criterio tiene.
 wrj = pesos * maximos
 
 #Para calcular el segundo ranking (RPA), a cada criterio, se le resta el valor del maximo/minimo multiplicado por el peso (wrj)
 rpa = wxij - wrj
-#Se genera un array con los valores máximos de cada evento
+#Se genera un array con los valores máximos (Se aplica valor absoluto al resultado de la operación anterior)
+#de cada evento
 rpa2 = rpa.abs().transpose().max()
 #Se el agrega una nueva columna con el array de los filtros.
 rpa22 = pd.concat([rpa2, nwcol], axis=1)
@@ -127,7 +134,7 @@ rpa222['ranking'] = rpa222['ranking']+1
 
 
 
-#Se toma cada criterio de la matriz mxij, y se eleva a una potencia que es igual al peso de cada criterio.
+#Se toma cada criterio de la matriz mxij, y se eleva a una potencia, que es igual al peso de cada criterio.
 #Es decir criterio ^ peso_criterio.
 xijpw = mxij.transpose() ** pesos
 #print(xijpw)
@@ -136,6 +143,9 @@ xijpw = mxij.transpose() ** pesos
 #se multiplican, y los criterios negativos se dividen
 #Ejemplo: crit_pos * crit_pos / crit_neg * crit_pos * crit_pos / crit_neg.
 #En éste ejemplo todos son positivos, por eso todos se multiplican
+#Se utiliza el array para que los criterios de beneficio se multipliquen y los de costo se dividan.
+# Igual que en el paso anterior, se toma cada elemento y se eleva a la potencia que le corresponde a su criterio.
+#Falta implementar este paso.
 fmf = np.prod(xijpw.transpose())
 #Se el agrega una nueva columna con el array de los filtros.
 fmf3 = pd.concat([fmf, nwcol], axis=1)
