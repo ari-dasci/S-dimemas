@@ -3,17 +3,11 @@ import numpy as np
 
 
 #Se carga el archivo csv con los datos de las evaluaciones
-#Éste archivo ya está normalizado, solo está pendiente el paso para normalizar.
+#Éste archivo ya está normalizado, solo está pendiente el paso para normalizar.#
 datos = pd.read_csv('La_noche_2019_normalizado.csv', delimiter=',')
-#print(datos)
+#print(datos)#
 
 #___________________________________________________________________________________________________
-#Pendiente la normalización de los datos a una sola escala
-#pero se usaría estas operaciones
-#escala3 = ((((datos.iloc[:,6:].abs()-1)*12)/2)+1)
-#escala5 = ((((datos.iloc[:,6:].abs()-1)*12)/4)+1)
-#escala7 = ((((datos.iloc[:,6:].abs()-1)*12)/6)+1)
-
 #Pendiente el vector de beneficio/costo
 #___________________________________________________________________________________________________
 
@@ -72,7 +66,7 @@ s_cuad = sc.sum(axis = 1)
 
 #Se calcula la Matriz x_ij^* , tomando cada valor del criterio y dividiendolo entre la
 #raiz cuadrada de la suma de los cuadarados de los valores de ese criterio.
-#valor-criterio/suma de todos los valor-criterio^2
+#valor_criterio/suma de todos los valor_criterio^2
 mxij = med1/ np.sqrt(s_cuad)
 #Se genera la matriz mxij concatenando los demás eventos utilizando la fórmula anterior
 mxij = pd.concat([mxij,med2/np.sqrt(s_cuad),med3/np.sqrt(s_cuad),med4/np.sqrt(s_cuad),med5/np.sqrt(s_cuad)], axis = 1)
