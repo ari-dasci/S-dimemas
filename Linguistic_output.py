@@ -47,4 +47,4 @@ datos4['ETIQUETA'] = datos4[0].round()
 #Se sustituyen los valores de la columna ETIQUETA, con los del diccionario de acuerdo al valor obtenido en el redondeo
 datos4['ETIQUETA'].replace(et_ling13, inplace = True)
 #print(datos4)
-datos.to_csv('etiqueta_por_actividad.csv', header = True, index = False)
+datos4.to_csv('etiqueta_por_actividad.csv', header = True, index = False)
