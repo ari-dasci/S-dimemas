@@ -43,7 +43,7 @@ for index, row in nwd.iterrows():  # Se recorre la matriz
                 (element / (row[0] - 1)) + 1)  # Se toma la escala (row[0]) y se le resta 1 (para que sea valor par)
             # Después, ese valor será el divisor de cada elemento de los criterios
             # Al resultado se le suma 1 y se va agregando a la fila que se esta recorriendo
-            #  Quedando en la misma columna que en el frame original cada uno de los valores de los criterios
+            # Quedando en la misma columna que en el frame original, cada uno de los valores de los criterios
         except:
             resultado[index].append(np.nan)  # Si la operación no se puede realizar, quiere decir que es un valor
             # en blanco, por lo que se le deja la etiqueta de NaN
@@ -52,7 +52,7 @@ for index, row in nwd.iterrows():  # Se recorre la matriz
 df_result = pd.DataFrame(resultado)
 # sustituimos los valores del dataframe original con los del dataframe de resultado
 datos.iloc[:, 7:] = df_result.values
-# En el dataframe original, le asignamos la nueva escala a la que normalizamos, que es mcm + 1
+# En el dataframe original, le asignamos la nueva escala a la que normalizamos, que es mcm + 1. Esto puede ser opcional
 #datos.ESCALA = mcm + 1
 
 #Exportamos el dataframe con todos los datos normalizados a una sola escala
