@@ -24,11 +24,11 @@ filtro1 = datos.pivot_table(index=['PROVINCIA', 'SUBEVENTO'])
 filtro2 = filtro1.rename_axis(None, axis=1).reset_index()
 #Creamos una tabla que contiene cada actividad con su respectivo evento, la utilizaremos como base para las demás operaciones
 filtro = filtro2.iloc[:, 0:2]
-a = len(filtro)
+#a = len(filtro)
 
 #Calculamos la media aritmética de cada SUBEVENTO (actividad) por criterio
 resultado = []
-for i in range(a):
+for i in range(len(filtro)):
     resultado.append(datos[(datos.PROVINCIA == filtro.PROVINCIA[i]) & (datos.SUBEVENTO == filtro.SUBEVENTO[i])].mean())
 
 #Convertimos las listas obtenidas en un nuevo DataFrame con las medias de cada criterio
@@ -45,6 +45,6 @@ datos4['BETA'] = datos4[0].round()
 #Se crea otra columna con las mismas características que la anterior, pero ésta nos servirá para sustituir sus valores
 datos4['ETIQUETA'] = datos4[0].round()
 #Se sustituyen los valores de la columna ETIQUETA, con los del diccionario de acuerdo al valor obtenido en el redondeo
-datos4['ETIQUETA'].replace(et_ling13, inplace = True)
+datos4['ETIQUETA'].replace(et_ling13, inplace=True)
 #print(datos4)
-datos4.to_csv('etiqueta_por_actividad.csv', header = True, index = False)
+datos4.to_csv('etiqueta_por_actividad.csv', header=True, index=False)
