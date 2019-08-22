@@ -1,9 +1,12 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="ChangeListManager">
-    <list default="true" id="e02f803a-323d-483c-9ac3-e82da5163506" name="Default Changelist" comment="">
+    <list default="true" id="e02f803a-323d-483c-9ac3-e82da5163506" name="Default Changelist" comment="Se hicieron cambios al filtrar datos para el reporte">
+      <change beforePath="$PROJECT_DIR$/.idea/Modelado DIME+.iml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/Modelado DIME+.iml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/inspectionProfiles/Project_Default.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/inspectionProfiles/Project_Default.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/misc.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/misc.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Eval_Multimoora.py" beforeDir="false" afterPath="$PROJECT_DIR$/Eval_Multimoora.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/normalizados.csv" beforeDir="false" afterPath="$PROJECT_DIR$/normalizados.csv" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/reporte_RAW.py" beforeDir="false" afterPath="$PROJECT_DIR$/reporte_RAW.py" afterDir="false" />
     </list>
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
@@ -12,33 +15,19 @@
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
     <option name="LAST_RESOLUTION" value="IGNORE" />
   </component>
-  <component name="FileEditorManager">
-    <leaf SIDE_TABS_SIZE_LIMIT_KEY="300">
-      <file pinned="false" current-in-tab="true">
-        <entry file="file://$PROJECT_DIR$/Eval_Multimoora.py">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="265">
-              <caret line="239" column="34" lean-forward="true" selection-start-line="239" selection-start-column="34" selection-end-line="239" selection-end-column="34" />
-              <folding>
-                <element signature="e#0#19#0" expanded="true" />
-              </folding>
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/reporte_RAW.py">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="102">
-              <caret line="6" selection-start-line="6" selection-end-line="6" selection-end-column="79" />
-              <folding>
-                <element signature="e#0#19#0" expanded="true" />
-              </folding>
-            </state>
-          </provider>
-        </entry>
-      </file>
-    </leaf>
+  <component name="DatabaseView">
+    <option name="SHOW_INTERMEDIATE" value="true" />
+    <option name="GROUP_DATA_SOURCES" value="true" />
+    <option name="GROUP_SCHEMA" value="true" />
+    <option name="GROUP_CONTENTS" value="false" />
+    <option name="SORT_POSITIONED" value="false" />
+    <option name="SHOW_EMPTY_GROUPS" value="false" />
+    <option name="AUTO_SCROLL_FROM_SOURCE" value="false" />
+    <option name="HIDDEN_KINDS">
+      <set />
+    </option>
+    <expand />
+    <select />
   </component>
   <component name="FileTemplateManagerImpl">
     <option name="RECENT_TEMPLATES">
@@ -55,56 +44,24 @@
     </option>
     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
   </component>
-  <component name="IdeDocumentHistory">
-    <option name="CHANGED_PATHS">
-      <list>
-        <option value="$PROJECT_DIR$/reporte.py" />
-        <option value="$PROJECT_DIR$/reporte_RAW.py" />
-        <option value="$PROJECT_DIR$/Eval_Multimoora.py" />
-      </list>
-    </option>
-  </component>
-  <component name="ProjectFrameBounds" extendedState="6">
-    <option name="x" value="-19" />
-    <option name="y" value="33" />
-    <option name="width" value="1932" />
-    <option name="height" value="1055" />
-  </component>
-  <component name="ProjectView">
-    <navigator proportions="" version="1">
-      <foldersAlwaysOnTop value="true" />
-    </navigator>
-    <panes>
-      <pane id="Scope">
-        <subPane subId="Scope 'Project Files'; set:Project Files; class com.intellij.psi.search.scope.ProjectFilesScope">
-          <expand>
-            <path>
-              <item name="Eval-MM-GDM" type="3d21c010:ScopeViewTreeModel$ProjectNode" />
-              <item name="D:\Jero_Cloud\GitHub\Eval-MM-GDM" type="442cc68d:ScopeViewTreeModel$RootNode" />
-            </path>
-          </expand>
-          <select />
-        </subPane>
-      </pane>
-      <pane id="ProjectPane">
-        <subPane>
-          <expand>
-            <path>
-              <item name="Eval-MM-GDM" type="b2602c69:ProjectViewProjectNode" />
-              <item name="Eval-MM-GDM" type="462c0819:PsiDirectoryNode" />
-            </path>
-          </expand>
-          <select />
-        </subPane>
-      </pane>
-    </panes>
+  <component name="ProjectId" id="1OY7TMZy78C4UX8uJlPaQ6HknUQ" />
+  <component name="ProjectLevelVcsManager">
+    <ConfirmationsSetting value="2" id="Add" />
   </component>
   <component name="PropertiesComponent">
+    <property name="ASKED_ADD_EXTERNAL_FILES" value="true" />
     <property name="ASKED_SHARE_PROJECT_CONFIGURATION_FILES" value="true" />
     <property name="SHARE_PROJECT_CONFIGURATION_FILES" value="true" />
     <property name="WebServerToolWindowFactoryState" value="false" />
-    <property name="last_opened_file_path" value="C:/Program Files/R/R-3.6.1/bin/R.exe" />
+    <property name="last_opened_file_path" value="$PROJECT_DIR$" />
     <property name="settings.editor.selected.configurable" value="com.jetbrains.python.configuration.PyActiveSdkModuleConfigurable" />
+  </component>
+  <component name="PyConsoleOptionsProvider">
+    <option name="myPythonConsoleState">
+      <console-settings>
+        <option name="useSoftWraps" value="true" />
+      </console-settings>
+    </option>
   </component>
   <component name="RunDashboard">
     <option name="ruleStates">
@@ -118,7 +75,7 @@
       </list>
     </option>
   </component>
-  <component name="RunManager" selected="Python.reporte">
+  <component name="RunManager" selected="Python.reporte_RAW">
     <configuration name="Eval_Multimoora" type="PythonConfigurationType" factoryName="Python" temporary="true">
       <module name="Modelado DIME+" />
       <option name="INTERPRETER_OPTIONS" value="" />
@@ -133,6 +90,50 @@
       <option name="ADD_SOURCE_ROOTS" value="true" />
       <EXTENSION ID="PythonCoverageRunConfigurationExtension" runner="coverage.py" />
       <option name="SCRIPT_NAME" value="$PROJECT_DIR$/Eval_Multimoora.py" />
+      <option name="PARAMETERS" value="" />
+      <option name="SHOW_COMMAND_LINE" value="true" />
+      <option name="EMULATE_TERMINAL" value="false" />
+      <option name="MODULE_MODE" value="false" />
+      <option name="REDIRECT_INPUT" value="false" />
+      <option name="INPUT_FILE" value="" />
+      <method v="2" />
+    </configuration>
+    <configuration name="Linguistic_output" type="PythonConfigurationType" factoryName="Python" temporary="true">
+      <module name="Modelado DIME+" />
+      <option name="INTERPRETER_OPTIONS" value="" />
+      <option name="PARENT_ENVS" value="true" />
+      <envs>
+        <env name="PYTHONUNBUFFERED" value="1" />
+      </envs>
+      <option name="SDK_HOME" value="" />
+      <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$" />
+      <option name="IS_MODULE_SDK" value="true" />
+      <option name="ADD_CONTENT_ROOTS" value="true" />
+      <option name="ADD_SOURCE_ROOTS" value="true" />
+      <EXTENSION ID="PythonCoverageRunConfigurationExtension" runner="coverage.py" />
+      <option name="SCRIPT_NAME" value="$PROJECT_DIR$/Linguistic_output.py" />
+      <option name="PARAMETERS" value="" />
+      <option name="SHOW_COMMAND_LINE" value="true" />
+      <option name="EMULATE_TERMINAL" value="false" />
+      <option name="MODULE_MODE" value="false" />
+      <option name="REDIRECT_INPUT" value="false" />
+      <option name="INPUT_FILE" value="" />
+      <method v="2" />
+    </configuration>
+    <configuration name="Normalización" type="PythonConfigurationType" factoryName="Python" temporary="true">
+      <module name="Modelado DIME+" />
+      <option name="INTERPRETER_OPTIONS" value="" />
+      <option name="PARENT_ENVS" value="true" />
+      <envs>
+        <env name="PYTHONUNBUFFERED" value="1" />
+      </envs>
+      <option name="SDK_HOME" value="" />
+      <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$" />
+      <option name="IS_MODULE_SDK" value="true" />
+      <option name="ADD_CONTENT_ROOTS" value="true" />
+      <option name="ADD_SOURCE_ROOTS" value="true" />
+      <EXTENSION ID="PythonCoverageRunConfigurationExtension" runner="coverage.py" />
+      <option name="SCRIPT_NAME" value="$PROJECT_DIR$/Normalización.py" />
       <option name="PARAMETERS" value="" />
       <option name="SHOW_COMMAND_LINE" value="true" />
       <option name="EMULATE_TERMINAL" value="false" />
@@ -163,20 +164,17 @@
       <option name="INPUT_FILE" value="" />
       <method v="2" />
     </configuration>
-    <configuration name="reporte" type="PythonConfigurationType" factoryName="Python" temporary="true">
+    <configuration name="reporte_RAW" type="PythonConfigurationType" factoryName="Python" temporary="true">
       <module name="Modelado DIME+" />
       <option name="INTERPRETER_OPTIONS" value="" />
       <option name="PARENT_ENVS" value="true" />
-      <envs>
-        <env name="PYTHONUNBUFFERED" value="1" />
-      </envs>
       <option name="SDK_HOME" value="" />
       <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$" />
       <option name="IS_MODULE_SDK" value="true" />
       <option name="ADD_CONTENT_ROOTS" value="true" />
       <option name="ADD_SOURCE_ROOTS" value="true" />
       <EXTENSION ID="PythonCoverageRunConfigurationExtension" runner="coverage.py" />
-      <option name="SCRIPT_NAME" value="$PROJECT_DIR$/reporte.py" />
+      <option name="SCRIPT_NAME" value="$PROJECT_DIR$/reporte_RAW.py" />
       <option name="PARAMETERS" value="" />
       <option name="SHOW_COMMAND_LINE" value="true" />
       <option name="EMULATE_TERMINAL" value="false" />
@@ -185,9 +183,17 @@
       <option name="INPUT_FILE" value="" />
       <method v="2" />
     </configuration>
+    <list>
+      <item itemvalue="Python.Eval_Multimoora" />
+      <item itemvalue="Python.reporte_RAW" />
+      <item itemvalue="Python.Normalización" />
+      <item itemvalue="Python.Linguistic_output" />
+    </list>
     <recent_temporary>
       <list>
-        <item itemvalue="Python.reporte" />
+        <item itemvalue="Python.reporte_RAW" />
+        <item itemvalue="Python.Linguistic_output" />
+        <item itemvalue="Python.Normalización" />
         <item itemvalue="Python.Eval_Multimoora" />
       </list>
     </recent_temporary>
@@ -210,7 +216,24 @@
       <workItem from="1563790911621" duration="1026000" />
       <workItem from="1563809364819" duration="601000" />
       <workItem from="1563869565696" duration="1251000" />
-      <workItem from="1563980700929" duration="775000" />
+      <workItem from="1563980700929" duration="1412000" />
+      <workItem from="1564142589063" duration="22000" />
+      <workItem from="1564142688971" duration="549000" />
+      <workItem from="1564143259007" duration="1349000" />
+      <workItem from="1564145177319" duration="899000" />
+      <workItem from="1564147484782" duration="1200000" />
+      <workItem from="1564169599880" duration="14547000" />
+      <workItem from="1564392177607" duration="17348000" />
+      <workItem from="1564486708448" duration="32320000" />
+      <workItem from="1564681304895" duration="2525000" />
+      <workItem from="1564763164080" duration="6518000" />
+      <workItem from="1565002391330" duration="49878000" />
+      <workItem from="1565711651673" duration="6752000" />
+      <workItem from="1565866444268" duration="12973000" />
+      <workItem from="1565962811030" duration="16203000" />
+      <workItem from="1566218441256" duration="16445000" />
+      <workItem from="1566317881304" duration="12165000" />
+      <workItem from="1566469924348" duration="5701000" />
     </task>
     <task id="LOCAL-00001" summary="Primeras pruebas para los cálculos multimoora">
       <created>1562950977599</created>
@@ -296,49 +319,139 @@
       <option name="project" value="LOCAL" />
       <updated>1563367921279</updated>
     </task>
-    <option name="localTasksCounter" value="13" />
+    <task id="LOCAL-00013" summary="Se hicieron cambios a los comentarios en el código">
+      <created>1563981529491</created>
+      <option name="number" value="00013" />
+      <option name="presentableId" value="LOCAL-00013" />
+      <option name="project" value="LOCAL" />
+      <updated>1563981529491</updated>
+    </task>
+    <task id="LOCAL-00014" summary="Se hicieron modificaciones en los comentarios en el código">
+      <created>1564175257135</created>
+      <option name="number" value="00014" />
+      <option name="presentableId" value="LOCAL-00014" />
+      <option name="project" value="LOCAL" />
+      <updated>1564175257135</updated>
+    </task>
+    <task id="LOCAL-00015" summary="Se agregaron nuevos comentarios y se hicieron modificaciones ya existentes en el código.">
+      <created>1564272985525</created>
+      <option name="number" value="00015" />
+      <option name="presentableId" value="LOCAL-00015" />
+      <option name="project" value="LOCAL" />
+      <updated>1564272985526</updated>
+    </task>
+    <task id="LOCAL-00016" summary="Éste archivo es para normalizar las escalas de las valoraciones.">
+      <created>1564393235963</created>
+      <option name="number" value="00016" />
+      <option name="presentableId" value="LOCAL-00016" />
+      <option name="project" value="LOCAL" />
+      <updated>1564393235963</updated>
+    </task>
+    <task id="LOCAL-00017" summary="Se creó la función de normalización a una sola escala">
+      <created>1564873889164</created>
+      <option name="number" value="00017" />
+      <option name="presentableId" value="LOCAL-00017" />
+      <option name="project" value="LOCAL" />
+      <updated>1564873889164</updated>
+    </task>
+    <task id="LOCAL-00018" summary="Éste es el archvivo con todos los datos normalizados a una sola escala">
+      <created>1564874122683</created>
+      <option name="number" value="00018" />
+      <option name="presentableId" value="LOCAL-00018" />
+      <option name="project" value="LOCAL" />
+      <updated>1564874122683</updated>
+    </task>
+    <task id="LOCAL-00019" summary="Se hicieron cambios en los comentarios del código">
+      <created>1565091758248</created>
+      <option name="number" value="00019" />
+      <option name="presentableId" value="LOCAL-00019" />
+      <option name="project" value="LOCAL" />
+      <updated>1565091758248</updated>
+    </task>
+    <task id="LOCAL-00020" summary="Se están haciendo las pruebas para el módulo de salida lingüística">
+      <created>1565270530503</created>
+      <option name="number" value="00020" />
+      <option name="presentableId" value="LOCAL-00020" />
+      <option name="project" value="LOCAL" />
+      <updated>1565270530504</updated>
+    </task>
+    <task id="LOCAL-00021" summary="Se terminó con la fase de traslación a un término lingüístico las evaluaciones de cada actividad.&#10;Hasta este punto no se toman en cuenta los pesos para cada criterio.">
+      <created>1565288815660</created>
+      <option name="number" value="00021" />
+      <option name="presentableId" value="LOCAL-00021" />
+      <option name="project" value="LOCAL" />
+      <updated>1565288815660</updated>
+    </task>
+    <task id="LOCAL-00022" summary="Se corrige la generación del archivo CSV">
+      <created>1565289158369</created>
+      <option name="number" value="00022" />
+      <option name="presentableId" value="LOCAL-00022" />
+      <option name="project" value="LOCAL" />
+      <updated>1565289158369</updated>
+    </task>
+    <task id="LOCAL-00023" summary="Se hicieron cambios al filtrar datos para el reporte">
+      <created>1565715349701</created>
+      <option name="number" value="00023" />
+      <option name="presentableId" value="LOCAL-00023" />
+      <option name="project" value="LOCAL" />
+      <updated>1565715349701</updated>
+    </task>
+    <task id="LOCAL-00024" summary="Se le agregaron comentarios al código">
+      <created>1565880814142</created>
+      <option name="number" value="00024" />
+      <option name="presentableId" value="LOCAL-00024" />
+      <option name="project" value="LOCAL" />
+      <updated>1565880814142</updated>
+    </task>
+    <task id="LOCAL-00025" summary="Se hicieron cambios en la forma de filtrar los datos para el informe">
+      <created>1565899131751</created>
+      <option name="number" value="00025" />
+      <option name="presentableId" value="LOCAL-00025" />
+      <option name="project" value="LOCAL" />
+      <updated>1565899131751</updated>
+    </task>
+    <task id="LOCAL-00026" summary="Se hicieron pruebas y cambios en algunas partes del código">
+      <created>1566082555629</created>
+      <option name="number" value="00026" />
+      <option name="presentableId" value="LOCAL-00026" />
+      <option name="project" value="LOCAL" />
+      <updated>1566082555629</updated>
+    </task>
+    <task id="LOCAL-00027" summary="Se está modificando el código para filtrar los datos para el informe">
+      <created>1566084162761</created>
+      <option name="number" value="00027" />
+      <option name="presentableId" value="LOCAL-00027" />
+      <option name="project" value="LOCAL" />
+      <updated>1566084162761</updated>
+    </task>
+    <task id="LOCAL-00028" summary="Se cambio la forma de realizar los filtros para las tablas que servirán como reportes">
+      <created>1566404754053</created>
+      <option name="number" value="00028" />
+      <option name="presentableId" value="LOCAL-00028" />
+      <option name="project" value="LOCAL" />
+      <updated>1566404754053</updated>
+    </task>
+    <option name="localTasksCounter" value="29" />
     <servers />
-  </component>
-  <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="113165000" />
-  </component>
-  <component name="ToolWindowManager">
-    <frame x="-8" y="-8" width="1936" height="1066" extended-state="6" />
-    <editor active="true" />
-    <layout>
-      <window_info content_ui="combo" id="Project" order="0" visible="true" weight="0.16791044" />
-      <window_info id="Structure" order="1" side_tool="true" weight="0.25" />
-      <window_info id="Favorites" order="2" side_tool="true" />
-      <window_info anchor="bottom" id="Message" order="0" />
-      <window_info anchor="bottom" id="Find" order="1" />
-      <window_info anchor="bottom" id="Run" order="2" weight="0.3298731" />
-      <window_info anchor="bottom" id="Debug" order="3" weight="0.39978564" />
-      <window_info anchor="bottom" id="Cvs" order="4" weight="0.25" />
-      <window_info anchor="bottom" id="Inspection" order="5" weight="0.4" />
-      <window_info anchor="bottom" id="TODO" order="6" />
-      <window_info anchor="bottom" id="Docker" order="7" show_stripe_button="false" />
-      <window_info anchor="bottom" id="Version Control" order="8" weight="0.3290461" />
-      <window_info anchor="bottom" id="Database Changes" order="9" />
-      <window_info anchor="bottom" id="Event Log" order="10" side_tool="true" weight="0.3298731" />
-      <window_info anchor="bottom" id="Terminal" order="11" weight="0.3290461" />
-      <window_info active="true" anchor="bottom" content_ui="combo" id="Python Console" order="12" visible="true" weight="0.2636656" />
-      <window_info anchor="right" id="Commander" internal_type="SLIDING" order="0" type="SLIDING" weight="0.4" />
-      <window_info anchor="right" id="Ant Build" order="1" weight="0.25" />
-      <window_info anchor="right" content_ui="combo" id="Hierarchy" order="2" weight="0.25" />
-      <window_info anchor="right" id="SciView" order="3" sideWeight="0.62590975" visible="true" weight="0.23400854" />
-      <window_info anchor="right" id="R Graphics" order="4" />
-      <window_info anchor="right" id="R Packages" order="5" />
-      <window_info anchor="right" x="0" y="0" width="300" height="800" id="Documentation" order="6" sideWeight="0.37409025" side_tool="true" visible="true" weight="0.23400854" />
-      <window_info anchor="right" id="Database" order="7" />
-    </layout>
   </component>
   <component name="TypeScriptGeneratedFilesManager">
     <option name="version" value="1" />
   </component>
+  <component name="Vcs.Log.Tabs.Properties">
+    <option name="TAB_STATES">
+      <map>
+        <entry key="MAIN">
+          <value>
+            <State>
+              <option name="COLUMN_ORDER" />
+            </State>
+          </value>
+        </entry>
+      </map>
+    </option>
+  </component>
   <component name="VcsManagerConfiguration">
-    <MESSAGE value="Primeras pruebas para los cálculos multimoora" />
-    <MESSAGE value="Se hicieron los cambios para el cálculo del primer índice de multimoora." />
-    <MESSAGE value="Se agregaron los cálculos de los otros dos índices." />
+    <option name="ADD_EXTERNAL_FILES_SILENTLY" value="true" />
     <MESSAGE value="Se hicieron los cálculos de todos los índices. Falta el paso de hacer el ranking de los índices." />
     <MESSAGE value="Se hicieron los cálculos de todos los índices. Falta el paso de hacer el ranking de los índices.&#10;Corrección de un cálculo" />
     <MESSAGE value="Se generó la primera clasificación de los ranking utilizando &#10;el método Rank Position Method (RPM)." />
@@ -348,40 +461,29 @@
     <MESSAGE value="Se agregaron nuevos comentarios al código." />
     <MESSAGE value="Se le agregó la opción de exportar las tablas con los dos índices, para después ser utilizados en un reporte." />
     <MESSAGE value="Se estan haciendo las pruebas de generar un reporte desde RAW" />
-    <option name="LAST_COMMIT_MESSAGE" value="Se estan haciendo las pruebas de generar un reporte desde RAW" />
+    <MESSAGE value="Se hicieron cambios a los comentarios en el código" />
+    <MESSAGE value="Se hicieron modificaciones en los comentarios en el código" />
+    <MESSAGE value="Se agregaron nuevos comentarios y se hicieron modificaciones ya existentes en el código." />
+    <MESSAGE value="Éste archivo es para normalizar las escalas de las valoraciones." />
+    <MESSAGE value="Se creó la función de normalización a una sola escala" />
+    <MESSAGE value="Éste es el archvivo con todos los datos normalizados a una sola escala" />
+    <MESSAGE value="Se hicieron cambios en los comentarios del código" />
+    <MESSAGE value="Se están haciendo las pruebas para el módulo de salida lingüística" />
+    <MESSAGE value="Se terminó con la fase de traslación a un término lingüístico las evaluaciones de cada actividad.&#10;Hasta este punto no se toman en cuenta los pesos para cada criterio." />
+    <MESSAGE value="Se corrige la generación del archivo CSV" />
+    <MESSAGE value="Se hicieron cambios al filtrar datos para el reporte" />
+    <MESSAGE value="Se le agregaron comentarios al código" />
+    <MESSAGE value="Se hicieron cambios en la forma de filtrar los datos para el informe" />
+    <MESSAGE value="Se hicieron pruebas y cambios en algunas partes del código" />
+    <MESSAGE value="Se está modificando el código para filtrar los datos para el informe" />
+    <MESSAGE value="Se cambio la forma de realizar los filtros para las tablas que servirán como reportes" />
+    <option name="LAST_COMMIT_MESSAGE" value="Se cambio la forma de realizar los filtros para las tablas que servirán como reportes" />
   </component>
   <component name="com.intellij.coverage.CoverageDataManagerImpl">
-    <SUITE FILE_PATH="coverage/Eval_MM_GDM$Eval_Multimoora.coverage" NAME="Eval_Multimoora Coverage Results" MODIFIED="1563189496229" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
+    <SUITE FILE_PATH="coverage/Eval_MM_GDM$Normalización.coverage" NAME="Normalización Coverage Results" MODIFIED="1564426271133" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
     <SUITE FILE_PATH="coverage/Eval_MM_GDM$reporte.coverage" NAME="reporte Coverage Results" MODIFIED="1563361379942" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
-  </component>
-  <component name="editorHistoryManager">
-    <entry file="file://D:/WinAPP/Anaconda/Lib/site-packages/pandas/core/ops.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="178">
-          <caret line="1946" selection-start-line="1946" selection-end-line="1946" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/reporte.py" />
-    <entry file="file://$PROJECT_DIR$/reporte_RAW.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="102">
-          <caret line="6" selection-start-line="6" selection-end-line="6" selection-end-column="79" />
-          <folding>
-            <element signature="e#0#19#0" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/Eval_Multimoora.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="265">
-          <caret line="239" column="34" lean-forward="true" selection-start-line="239" selection-start-column="34" selection-end-line="239" selection-end-column="34" />
-          <folding>
-            <element signature="e#0#19#0" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
+    <SUITE FILE_PATH="coverage/Eval_MM_GDM$Linguistic_output.coverage" NAME="Linguistic_output Coverage Results" MODIFIED="1565193147748" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
+    <SUITE FILE_PATH="coverage/Eval_MM_GDM$reporte_RAW.coverage" NAME="reporte_RAW Coverage Results" MODIFIED="1566300899175" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
+    <SUITE FILE_PATH="coverage/Eval_MM_GDM$Eval_Multimoora.coverage" NAME="Eval_Multimoora Coverage Results" MODIFIED="1563189496229" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
   </component>
 </project>
