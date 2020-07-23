@@ -14,6 +14,8 @@ dsPrioridades = datos.applymap(lambda x: re.search('(\d+)[+-]', x)[1])
 dsEvaluacion = datos.applymap(lambda x: re.search('[+-]', x)[0])
 dsInferior = datos.applymap(lambda x: re.search('(\d+):', x)[1])
 dsSuperior = datos.applymap(lambda x: re.search(':(\d+)', x)[1])
+#print(dsInferior)
+#print(dsSuperior)
 
 #normalización
 actividad_escala = {}
@@ -22,3 +24,17 @@ for actividad in actividades:
     escalas = rawData.ESCALA.iloc[indices_escalas].unique()#se obtienes las escalas comotales
     escalas = [i - 1 for i in escalas]#se reduce en uno cada elemento
     actividad_escala[actividad] = numpy.lcm.reduce(escalas)#se crea un diccionario con las escalas para la normalización
+
+for i in dsInferior.index:
+    nactividad = rawData.ACTIVIDAD.loc[i]
+    MCM = actividad_escala[nactividad]
+    Es = escala[i]
+    for j in dsInferior:
+        Ev = int(dsInferior[j][i])
+        dsInferior[j][i] = ((Ev-1)*MCM/(Es-1))+1
+
+        Ev = int(dsSuperior[j][i])
+        dsSuperior[j][i] = ((Ev-1)*MCM/(Es-1))+1
+
+#print(dsInferior)
+#print(dsSuperior)
