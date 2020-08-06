@@ -228,25 +228,58 @@ rn = pandas.DataFrame()
 rn['y_i'] = RS['ranking']
 rn['z_i'] = i_RPA['ranking']
 rn['u_i'] = FMF['ranking']
-print(rn)
+#print(rn)
 
 #Matriz con los los índices
 mi = pandas.DataFrame()
 mi['y_i'] = RS['y_i']
 mi['z_i'] = i_RPA['z_i']
 mi['u_i'] = FMF['u_i']
-print(mi)
+#print(mi)
 #Se toman los índices y se suman sus cuadrados
 smi2 = {}
 smi2['y_i'] = (mi['y_i'] ** 2).sum()
 smi2['z_i'] = (mi['z_i'] ** 2).sum()
 smi2['u_i'] = (mi['u_i'] ** 2).sum()
 smi2 = pandas.Series(smi2)
-print(smi2)
+#print(smi2)
 
 #Indices normalizados
 IN = pandas.DataFrame(mi.copy())
 for columna in IN.columns.tolist():
     for fila in IN.index:
         IN[columna][fila] = IN[columna][fila] / smi2[columna]
-print(IN)
+#print(IN)
+
+#RPM(A1)
+RMP = pandas.DataFrame()
+RMP['RMP'] = mi['y_i']
+for fila in RMP.index:
+    suma = 0
+    for columna in rn:
+        suma += 1 / rn[columna][fila]
+    RMP['RMP'][fila] = 1 / suma
+RMP['ranking'] = RMP.rank()
+#print(RMP)
+
+RPM = pandas.DataFrame(RMP.copy())
+RPM = RPM.sort_values(by=['ranking'])
+#print(RPM)
+
+#m son los elementos que se van a rankear  m =
+m = RPM.shape[0]
+#print(m)
+#m(m+1)/2
+mm = m * ( m + 1) / 2
+#print(mm)
+
+IMB = pandas.DataFrame()
+IMB['IMB'] = mi['y_i']
+for fila in IMB.index:
+    IMB['IMB'][fila] = (IN['y_i'][fila] * ((m - rn['y_i'][fila] + 1)/mm)) - (IN['z_i'][fila] * (rn['z_i'][fila]/mm)) + (IN['u_i'][fila] * ((m - rn['u_i'][fila] + 1)/mm))
+IMB['ranking'] = IMB.rank(ascending = False)
+print(IMB)
+
+IMBo = pandas.DataFrame(IMB.copy())
+IMBo = IMBo.sort_values(by=['ranking'])
+print(IMBo)
