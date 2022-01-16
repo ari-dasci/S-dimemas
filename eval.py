@@ -4,6 +4,9 @@
 import pandas
 import re
 import numpy
+import os
+import json
+import shutil
 from statistics import mean
 
 # carga de los datos
@@ -735,14 +738,18 @@ for actividad in actividades:
                     'Alpha'],
                     [
                         promedio,
-                        round(promedio),
+                        int(round(promedio)),
                         promedio - round(promedio)
                 ])
             ),
             name=actividad
         )
     )
-#print(Eval_Ling_Media)
+
+etiquetas = []
+for actividad in actividades:
+    etiquetas.append(ELinguisticas[int(Eval_Ling_Media['S'][actividad])])
+Eval_Ling_Media['ETIQUETA LINGÜÍSTICA'] = etiquetas
 
 BetaAvg = Eval_Ling_Media['BetaAvg'].mean()
 S = round(BetaAvg)
@@ -804,32 +811,137 @@ for dimension in dimensiones:
         VPD[dimension, 'media'] = media
 
 
+shutil.rmtree('output', ignore_errors=True)
+shutil.copytree('base', 'output')
+shutil.copy('info.js', os.path.join('output', 'datos', 'info.js'))
+
+#Tablas informe 
+#print("Multimoora intervalo inferior")
+#print(MMI_IMBo)
+jdata = MMI_IMBo.to_json()
+with open(os.path.join('output', 'datos', 'MMI_IMBo.js'), 'w') as f:
+    f.write('var MMI_IMBo = ')
+    f.write(jdata)
+    f.write(';')
+
+#print("Multimoora intervalo superior")
+#print(MMS_IMBo)
+jdata = MMS_IMBo.to_json()
+with open(os.path.join('output', 'datos', 'MMS_IMBo.js'), 'w') as f:
+    f.write('var MMS_IMBo = ')
+    f.write(jdata)
+
+#print("Multimoora Valor central")
+#print(MMH_IMBo)
+jdata = MMH_IMBo.to_json()
+with open(os.path.join('output', 'datos', 'MMH_IMBo.js'), 'w') as f:
+    f.write('var MMH_IMBo = ')
+    f.write(jdata)
+
+#print("Valoración lingüística por actividad")
+#print("Optimista")
+#print(Eval_Ling_Optimista)
+jdata = Eval_Ling_Optimista.to_json(orient='index')
+with open(os.path.join('output', 'datos', 'Eval_Ling_Optimista.js'), 'w') as f:
+    f.write('var Eval_Ling_Optimista = ')
+    f.write(jdata)
+
+#print("Pesimista")
+#print(Eval_Ling_Pesimista)
+jdata = Eval_Ling_Pesimista.to_json(orient='index')
+with open(os.path.join('output', 'datos', 'Eval_Ling_Pesimista.js'), 'w') as f:
+    f.write('var Eval_Ling_Pesimista = ')
+    f.write(jdata)
+
+#print("Valor central")
+#print(Eval_Ling_Media)
+jdata = Eval_Ling_Media.to_json(orient='index')
+with open(os.path.join('output', 'datos', 'Eval_Ling_Media.js'), 'w') as f:
+    f.write('var Eval_Ling_Media = ')
+    f.write(jdata)
+
+#print("Valoración general del evento")
+#print(EtiquetaLinguistica)
+with open(os.path.join('output', 'datos', 'EtiquetaLinguistica.js'), 'w') as f:
+    f.write('var EtiquetaLinguistica = "')
+    f.write(EtiquetaLinguistica)
+    f.write('";')
+
+#print("Valoración lingüística de cada dimensión por actividad y evento")
+#for dimension in dimensiones:
+#    print(VPD[dimension, 'media'])
+with open(os.path.join('output', 'datos', 'dsValoraciones.js'), 'w') as f:
+    f.write('var dsValoraciones = {')
+    for dimension in dimensiones:
+        f.write('"' + dimension + '":')
+        f.write(VPD[dimension, 'media'].to_json(orient='index'))
+        f.write(',')
+    f.write('}')
 
 
+#print(dsPrioridades)
+jdata = dsPrioridades.to_json(orient='records')
+with open(os.path.join('output', 'datos', 'dsPrioridades.js'), 'w') as f:
+    f.write('var dsPrioridades = ')
+    f.write(jdata)
+#print(dsEvaluacion)
+jdata = dsEvaluacion.to_json(orient='records')
+with open(os.path.join('output', 'datos', 'dsEvaluacion.js'), 'w') as f:
+    f.write('var dsEvaluacion = ')
+    f.write(jdata)
+#print(dsInferior)
+jdata = dsInferior.to_json(orient='records')
+with open(os.path.join('output', 'datos', 'dsInferior.js'), 'w') as f:
+    f.write('var dsInferior = ')
+    f.write(jdata)
+#print(dsSuperior)
+jdata = dsSuperior.to_json(orient='records')
+with open(os.path.join('output', 'datos', 'dsSuperior.js'), 'w') as f:
+    f.write('var dsSuperior = ')
+    f.write(jdata)
 
-#Tablas informe
-print("Multimoora intervalo inferior")
-print(MMI_IMBo)
+estadisticos = {}
+for actividad in actividades:
+    estadisticos[actividad] = {
+        'TipoActividad': rawData.loc[rawData['ACTIVIDAD'] == actividad, 'TIPO DE ACTIVIDAD'].unique()[0],
+        'Num_Eval': rawData.loc[rawData['ACTIVIDAD'] == actividad, 'GENERO'].count(),
+        'Hombres': rawData.loc[(rawData['ACTIVIDAD'] == actividad) & (rawData['GENERO'] == 'Hombre'), 'GENERO'].count(),
+        'Mujeres': rawData.loc[(rawData['ACTIVIDAD'] == actividad) & (rawData['GENERO'] == 'Mujer'), 'GENERO'].count(),
+        '<15': rawData.loc[(rawData['ACTIVIDAD'] == actividad) & (rawData['EDAD'] < 15), 'GENERO'].count(),
+        '15-34': rawData.loc[(rawData['ACTIVIDAD'] == actividad) & (rawData['EDAD'] > 14) & (rawData['EDAD'] < 35), 'GENERO'].count(),
+        '35-69': rawData.loc[(rawData['ACTIVIDAD'] == actividad) & (rawData['EDAD'] > 35) & (rawData['EDAD'] < 70), 'GENERO'].count(),
+        '>70': rawData.loc[(rawData['ACTIVIDAD'] == actividad) & (rawData['EDAD'] > 69), 'GENERO'].count(),
+    }
+estadisticos = pandas.DataFrame.from_dict(estadisticos, orient='index', columns=['TipoActividad', 'Num_Eval', 'Hombres', 'Mujeres', '<15', '15-34', '35-69', '>70'])
+#print(estadisticos)
+with open(os.path.join('output', 'datos', 'estadisticos.js'), 'w') as f:
+    f.write('var estadisticos = ')
+    f.write(estadisticos.to_json(orient='index'))
 
-print("Multimoora intervalo superior")
-print(MMS_IMBo)
+PAfirmativas = {}
+for actividad in actividades:
+    preguntas = {}
+    for pregunta in rawData.filter(regex='Q').columns:
+        qx = rawData.loc[rawData['ACTIVIDAD'] == actividad, pregunta]
+        preguntas[pregunta] = (qx.value_counts() / qx.count() * 100)['si']
+    PAfirmativas[actividad] = preguntas
 
-print("Multimoora Valor central")
-print(MMH_IMBo)
+#print(PAfirmativas)
+with open(os.path.join('output', 'datos', 'pAfirmativas.js'), 'w') as f:
+    f.write('var pAfirmativas = ')
+    f.write(json.dumps(PAfirmativas))
 
-print("Valoración lingüística por actividad")
-print("Optimista")
-print(Eval_Ling_Optimista)
+with open(os.path.join('output', 'datos', 'pvcostben.js'), 'w') as f:
+    f.write('var pprefd = ')
+    f.write(pesosdimensiones.to_json())
 
-print("Pesimista")
-print(Eval_Ling_Pesimista)
+    f.write('\nvar ppard = ')
+    f.write(ppdimension.to_json())
 
-print("Valor central")
-print(Eval_Ling_Media)
+    f.write('\nvar pprefc = ')
+    f.write(pesoscriterios.to_json())
 
-print("Valoración general del evento")
-print(EtiquetaLinguistica)
+    f.write('\nvar pparc = ')
+    f.write(pesoparticipacion.to_json())
 
-print("Valoración lingüística de cada dimensión por actividad y evento")
-for dimension in dimensiones:
-    print(VPD[dimension, 'media'])
+print("Proceso completado correctamente")
