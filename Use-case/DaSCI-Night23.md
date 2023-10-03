@@ -1,5 +1,9 @@
-# Eval-MM-GDM
-Evaluation model with linguistic scales using the multimoora method.
+# European Researchers' Night 2023
 
-This program is designed to generate a ranking, based on evaluations given by the attendees of scientific dissemination events. It is contemplated that most of these events are part of citizen science projects.
-The evaluation of each event is given in linguistic scales, and the multimodal method is used to generate the rankings.
+## DaSCI science activities, September 2023
+
+European Researchers' Night is a Europe-wide public event, showcasing the diversity of science and its impact on citizens' daily lives in fun and inspiring ways.
+
+This year, the event will take place in 400 European cities simultaneously on Friday 29 September 2023. In Andalusia, and in particular in Granada, a participation of more than 700 researchers is reported https://www.ugr.es/universidad/noticias/presentada-noche-europea-investigadores-2023 
+
+DaSCI has participated in this event from each of our sites in Granada, Jaen and Cordoba. In particular, with the 7 activities in Granada, the present use case of the DIME+ tool is conformed.
