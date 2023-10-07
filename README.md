@@ -6,3 +6,7 @@ The evaluation of each event is given in linguistic scales, and the multimodal m
 
 ## Slogan
 ![You not only attend, you also participate... so tell me more.](Use-case/slogan.png)
+
+## DaSCI at NIGHTspain 2023
+We have use DIME+ with [NIGHTspain as case use](Use-case/DaSCI-Night23.md)
+Hemos usado DIME+ para [el caso de uso NIGHTspain](Use-case/DaSCI-LaNoche2023.md)
