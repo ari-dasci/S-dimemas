@@ -1,17 +1,35 @@
-#!/usr/bin/python
+#!/bin/python
 # -*- coding: utf-8 -*-
 
+import math
 import pandas
 import re
 import numpy
 import os
 import json
 import shutil
+import sys
 from statistics import mean
+from decimal import Decimal, ROUND_HALF_UP
+
+nround = lambda number: int(Decimal(number).to_integral_value(rounding=ROUND_HALF_UP))
+
+if len(sys.argv) != 6:
+    print("Número de argumentos inválido")
+    sys.exit(1)
+rho = float(sys.argv[4])
+# rho = 0.5
+lang = sys.argv[5]
+# lang = 'es'
+cfgFile = sys.argv[2]
+# cfgFile = 'info.js'
+outputDir = sys.argv[3]
+# outputDir = 'proyectos/prueba/'
+rawData = pandas.read_csv(sys.argv[1])
+# rawData = pandas.read_csv('datos-lanoche.csv')
 
 # carga de los datos
 # se cargan todos los datos del origen
-rawData = pandas.read_csv('calculos.csv')
 # se crea una lista solo con las escalas
 escala = pandas.Series(rawData['ESCALA'])
 # se determina cual es la columna de las escalas para poder extraer a posterior solamente las evaluaciones de los usuarios
@@ -27,36 +45,30 @@ for actividad in actividades:
     actividad_indices[actividad] = indices_escalas
 
 # obtención de los dataset por medio de expresiones regulares
-dsPrioridades = datos.applymap(lambda x: int(re.search('(\d+)[+-]', x)[1]))
-dsEvaluacion = datos.applymap(lambda x: re.search('[+-]', x)[0])
-dsInferior = datos.applymap(lambda x: re.search('(\d+):', x)[1])
-dsSuperior = datos.applymap(lambda x: re.search(':(\d+)', x)[1])
+# na_action no podía ser aplicado por la versión de pandas
+dsPrioridades = datos.map(lambda x: int(
+    re.search('(\d+)[+-]', x)[1]), na_action='ignore')
+dsEvaluacion = datos.map(lambda x: re.search('[+-]', x)[0], na_action='ignore')
+dsInferior = datos.map(lambda x: int(
+    re.search('(\d+):', x)[1]), na_action='ignore')
+dsSuperior = datos.map(lambda x: int(
+    re.search(':(\d+)', x)[1]), na_action='ignore')
 
 # print(dsInferior)
 # print(dsSuperior)
 
 # normalización
-actividad_escala = {}
-for actividad in actividades:
-    # se obtienen los indices de las escalas correpondientes por actividad
-    indices_escalas = rawData.index[rawData['ACTIVIDAD'] == actividad].tolist()
-    # se obtienes las escalas comotales
-    escalas = rawData.ESCALA.iloc[indices_escalas].unique()
-    escalas = [i - 1 for i in escalas]  # se reduce en uno cada elemento
-    # se crea un diccionario con las escalas para la normalización
-    actividad_escala[actividad] = numpy.lcm.reduce(escalas)
 
+MCM = numpy.lcm.reduce(list(map(lambda x: x-1, rawData.ESCALA.unique())))
 for i in dsInferior.index:
     nactividad = rawData.ACTIVIDAD.loc[i]
-    MCM = actividad_escala[nactividad]
     Es = escala[i]
     for j in dsInferior:
-        Ev = int(dsInferior[j][i])
+        Ev = dsInferior[j][i]
         dsInferior[j][i] = ((Ev-1)*MCM/(Es-1))+1
 
-        Ev = int(dsSuperior[j][i])
+        Ev = dsSuperior[j][i]
         dsSuperior[j][i] = ((Ev-1)*MCM/(Es-1))+1
-
 # print(dsInferior)
 # print(dsSuperior)
 
@@ -117,8 +129,9 @@ for dimension in dimensiones:
     for columna in dsPrioridades:
         if dimension + ' -' in columna:
             fdatos.extend(dsPrioridades[columna].tolist())
-    pesosdimensiones[dimension] = sum(fdatos) / len(fdatos)
+    pesosdimensiones[dimension] = numpy.nanmean(fdatos)
 pesosdimensiones = pandas.Series(pesosdimensiones.copy())
+
 MCM = numpy.lcm.reduce([int(x) for x in pesosdimensiones.tolist()])
 pesosdimensiones = pesosdimensiones.apply(lambda x: (MCM / x) * 1)
 suma = pesosdimensiones.sum()
@@ -164,7 +177,7 @@ for columna in dsInferior.columns.tolist():
 # print(MMI_ma)
 
 # Se elevan al cuadrado cada uno de los elementos (x^2) de la matriz anterior
-MMI_ma2 = MMI_ma.applymap(lambda x: x * x)
+MMI_ma2 = MMI_ma.map(lambda x: x * x)
 
 # Se suman los cuadrados de cada criterio, y obtenemos un array que usaremos a continuación
 MMI_suma_ma = {}
@@ -204,15 +217,15 @@ MMI_RS['ranking'] = MMI_RS.rank(ascending=False)
 
 # Para el siguiente ranking, se generan dos arrays, uno con los máximos y otros con los mínimos de los criterios en la Matriz (       ), los máximos representan los criterios de beneficios y los mínimos los criterios de costo.
 MMI_t9 = pandas.DataFrame()
-MMI_t9 = MMI_t9.append(pandas.Series(MMI_mar.max(), name='max'))
-MMI_t9 = MMI_t9.append(pandas.Series(MMI_mar.min(), name='min'))
+MMI_t9['max'] = MMI_mar.max()
+MMI_t9['min'] = MMI_mar.min()
 # print(MMI_t9)
 
 # Para calcular el array de referencia, tomaremos los valores máximos de cada criterio que son beneficio y los mínimos de costo, ayudandonos del Vector Ben(+)/Cost(-), y los multiplicaremos por el peso (    ) que cada criterio tiene.
 MMI_w_r_r_j = {}
 for fila in vectorBenCos.index:
-    MMI_w_r_r_j[fila] = MMI_t9[fila]['max'] * \
-        ndp[fila] if vectorBenCos[fila] > 0 else MMI_t9[fila]['min'] * ndp[fila]
+    MMI_w_r_r_j[fila] = MMI_t9['max'][fila] * \
+        ndp[fila] if vectorBenCos[fila] > 0 else MMI_t9['min'][fila] * ndp[fila]
 MMI_w_r_r_j = pandas.Series(MMI_w_r_r_j.copy())
 # print(MMI_w_r_r_j)
 
@@ -221,8 +234,8 @@ MMI_RPA = pandas.DataFrame(MMI_marm.copy())
 for columna in MMI_RPA.columns.tolist():
     for fila in MMI_RPA.index:
         if MMI_RPA[columna][fila] != numpy.nan:
-            MMI_RPA[columna][fila] = MMI_w_r_r_j[columna] - \
-                MMI_RPA[columna][fila]
+            MMI_RPA[columna][fila] = abs(
+                MMI_w_r_r_j[columna] - MMI_RPA[columna][fila])
 # print(MMI_RPA)
 
 # Para obtener el segundo ranking (MMI_RPA), se toman el valor máximo de cada evento. El índice del ranking es el órden ascendente de los valores anteriores
@@ -285,8 +298,9 @@ MMI_smi2 = pandas.Series(MMI_smi2)
 MMI_IN = pandas.DataFrame(MMI_mi.copy())
 for columna in MMI_IN.columns.tolist():
     for fila in MMI_IN.index:
-        MMI_IN[columna][fila] = MMI_IN[columna][fila] / MMI_smi2[columna]
-# print(MMI_IN)
+        MMI_IN[columna][fila] = MMI_IN[columna][fila] / \
+            numpy.sqrt(MMI_smi2[columna])
+# print("ïndices normalizados\n", MMI_IN)
 
 # MMI_RPM(A1)
 MMI_RMP = pandas.DataFrame()
@@ -320,7 +334,7 @@ MMI_IMB['ranking'] = MMI_IMB.rank(ascending=False)
 
 MMI_IMBo = pandas.DataFrame(MMI_IMB.copy())
 MMI_IMBo = MMI_IMBo.sort_values(by=['ranking'])
-#print(MMI_IMBo)
+# print(MMI_IMBo)
 
 
 # multimoora superior
@@ -338,7 +352,7 @@ for columna in dsSuperior.columns.tolist():
 # print(MMS_ma)
 
 # Se elevan al cuadrado cada uno de los elementos (x^2) de la matriz anterior
-MMS_ma2 = MMS_ma.applymap(lambda x: x * x)
+MMS_ma2 = MMS_ma.map(lambda x: x * x)
 
 # Se suman los cuadrados de cada criterio, y obtenemos un array que usaremos a continuación
 MMS_suma_ma = {}
@@ -374,19 +388,19 @@ for fila in actividad_indices:
 MMS_RS = pandas.Series(MMS_RS.copy())
 MMS_RS = MMS_RS.to_frame(name='y_i')
 MMS_RS['ranking'] = MMS_RS.rank(ascending=False)
-# print(MMS_RS)
+print(MMS_RS)
 
 # Para el siguiente ranking, se generan dos arrays, uno con los máximos y otros con los mínimos de los criterios en la Matriz (       ), los máximos representan los criterios de beneficios y los mínimos los criterios de costo.
 MMS_t9 = pandas.DataFrame()
-MMS_t9 = MMS_t9.append(pandas.Series(MMS_mar.max(), name='max'))
-MMS_t9 = MMS_t9.append(pandas.Series(MMS_mar.min(), name='min'))
+MMS_t9['max'] = MMS_mar.max()
+MMS_t9['min'] = MMS_mar.min()
 # print(MMS_t9)
 
 # Para calcular el array de referencia, tomaremos los valores máximos de cada criterio que son beneficio y los mínimos de costo, ayudandonos del Vector Ben(+)/Cost(-), y los multiplicaremos por el peso (    ) que cada criterio tiene.
 MMS_w_r_r_j = {}
 for fila in vectorBenCos.index:
-    MMS_w_r_r_j[fila] = MMS_t9[fila]['max'] * \
-        ndp[fila] if vectorBenCos[fila] > 0 else MMS_t9[fila]['min'] * ndp[fila]
+    MMS_w_r_r_j[fila] = MMS_t9['max'][fila] * \
+        ndp[fila] if vectorBenCos[fila] > 0 else MMS_t9['min'][fila] * ndp[fila]
 MMS_w_r_r_j = pandas.Series(MMS_w_r_r_j.copy())
 # print(MMS_w_r_r_j)
 
@@ -395,9 +409,9 @@ MMS_RPA = pandas.DataFrame(MMS_marm.copy())
 for columna in MMS_RPA.columns.tolist():
     for fila in MMS_RPA.index:
         if MMS_RPA[columna][fila] != numpy.nan:
-            MMS_RPA[columna][fila] = MMS_w_r_r_j[columna] - \
-                MMS_RPA[columna][fila]
-# print(MMS_RPA)
+            MMS_RPA[columna][fila] = abs(
+                MMS_w_r_r_j[columna] - MMS_RPA[columna][fila])#Corregida, faltaba valor absoluto
+print(MMS_RPA)
 
 # Para obtener el segundo ranking (MMS_RPA), se toman el valor máximo de cada evento. El índice del ranking es el órden ascendente de los valores anteriores
 MMS_i_RPA = {}
@@ -431,7 +445,7 @@ for fila in actividad_indices:
 MMS_FMF = pandas.Series(MMS_FMF.copy())
 MMS_FMF = MMS_FMF.to_frame(name='u_i')
 MMS_FMF['ranking'] = MMS_FMF.rank(ascending=False)
-# print(MMS_FMF)
+print(MMS_FMF)
 
 # Para utilizar los métodos MMS_RPM e MMS_IMB y obtener el ranking final de los eventos, necesitaremos los índices y con sus respectivos rankings de cada actividad, obtenidos de los tres métodos anteriores.
 # Matriz con los rankings numéricos
@@ -459,7 +473,7 @@ MMS_smi2 = pandas.Series(MMS_smi2)
 MMS_IN = pandas.DataFrame(MMS_mi.copy())
 for columna in MMS_IN.columns.tolist():
     for fila in MMS_IN.index:
-        MMS_IN[columna][fila] = MMS_IN[columna][fila] / MMS_smi2[columna]
+        MMS_IN[columna][fila] = MMS_IN[columna][fila] / numpy.sqrt(MMS_smi2[columna])#Corrección, faltaba raíz
 # print(MMS_IN)
 
 # MMS_RPM(A1)
@@ -471,11 +485,11 @@ for fila in MMS_RMP.index:
         suma += 1 / MMS_rn[columna][fila]
     MMS_RMP['MMS_RMP'][fila] = 1 / suma
 MMS_RMP['ranking'] = MMS_RMP.rank()
-# print(MMS_RMP)
+print(MMS_RMP)
 
 MMS_RPM = pandas.DataFrame(MMS_RMP.copy())
 MMS_RPM = MMS_RPM.sort_values(by=['ranking'])
-# print(MMS_RPM)
+print(MMS_RPM)
 
 # MMS_m son los elementos que se van a rankear  MMS_m =
 MMS_m = MMS_RPM.shape[0]
@@ -490,17 +504,17 @@ for fila in MMS_IMB.index:
     MMS_IMB['MMS_IMB'][fila] = (MMS_IN['y_i'][fila] * ((MMS_m - MMS_rn['y_i'][fila] + 1)/MMS_mm)) - (
         MMS_IN['z_i'][fila] * (MMS_rn['z_i'][fila]/MMS_mm)) + (MMS_IN['u_i'][fila] * ((MMS_m - MMS_rn['u_i'][fila] + 1)/MMS_mm))
 MMS_IMB['ranking'] = MMS_IMB.rank(ascending=False)
-# print(MMS_IMB)
+print(MMS_IMB)
 
 MMS_IMBo = pandas.DataFrame(MMS_IMB.copy())
 MMS_IMBo = MMS_IMBo.sort_values(by=['ranking'])
-# print(MMS_IMBo)
+print(MMS_IMBo)
 
 
 # Al trabajar con límites inferiores y superiores, podemos hacer un ranking tomando en cuenta ambos límites.
 # Para este nuevo ranking, calcularemos la media aritmética de los índices superiores e inferiores de cada evento.
 # índices inferiores
-#print("índices inferiores")
+# print("índices inferiores")
 MMH_ii_RS = pandas.DataFrame()
 MMH_ii_RS['y_i'] = MMI_mi['y_i']
 MMH_ii_RS['ranking'] = MMH_ii_RS.rank(ascending=False)
@@ -519,7 +533,7 @@ MMH_ii_FMF['ranking'] = MMH_ii_FMF.rank(ascending=False)
 # print(MMH_ii_FMF)
 
 # indices superiores
-#print("\n\níndices superiores")
+# print("\n\níndices superiores")
 MMH_is_RS = pandas.DataFrame()
 MMH_is_RS['y_i'] = MMS_mi['y_i']
 MMH_is_RS['ranking'] = MMH_is_RS.rank(ascending=False)
@@ -537,22 +551,22 @@ MMH_is_FMF['u_i'] = MMS_mi['u_i']
 MMH_is_FMF['ranking'] = MMH_is_FMF.rank(ascending=False)
 # print(MMH_is_FMF)
 
-#print("\n\nMedia de ambos índices")
+# print("\n\nMedia de ambos índices")
 MMH_mi_RS = pandas.DataFrame(MMH_ii_RS.copy())
 MMH_mi_RPA = pandas.DataFrame(MMH_ii_RPA.copy())
 MMH_mi_FMF = pandas.DataFrame(MMH_ii_FMF.copy())
 for row in MMH_ii_RS.index:
     MMH_mi_RS['y_i'][row] = mean(
         [MMH_ii_RS['y_i'][row], MMH_is_RS['y_i'][row]])
-    MMH_mi_RS['ranking'] = MMH_mi_RS.rank(ascending=False)
+    MMH_mi_RS['ranking'] = MMH_mi_RS['y_i'].rank(ascending=False)
 
     MMH_mi_RPA['z_i'][row] = mean(
         [MMH_ii_RPA['z_i'][row], MMH_is_RPA['z_i'][row]])
-    MMH_mi_RPA['ranking'] = MMH_mi_RPA.rank(ascending=True)
+    MMH_mi_RPA['ranking'] = MMH_mi_RPA['z_i'].rank(ascending=True)
 
     MMH_mi_FMF['u_i'][row] = mean(
         [MMH_ii_FMF['u_i'][row], MMH_is_FMF['u_i'][row]])
-    MMH_mi_FMF['ranking'] = MMH_mi_FMF.rank(ascending=False)
+    MMH_mi_FMF['ranking'] = MMH_mi_FMF['u_i'].rank(ascending=False)
 
 # print(MMH_mi_RS)
 # print(MMH_mi_RPA)
@@ -560,7 +574,7 @@ for row in MMH_ii_RS.index:
 
 # Para utilizar los métodos RPM e IMB y obtener el ranking final de los eventos, necesitaremos los índices y con sus respectivos rankings de cada actividad, obtenidos de RS, RPA y FMF
 # Matriz con los rankings numéricos
-#print("Matriz con los rankings numéricos")
+# print("Matriz con los rankings numéricos")
 MMH_rn = pandas.DataFrame()
 MMH_rn['y_i'] = MMH_mi_RS['ranking']
 MMH_rn['z_i'] = MMH_mi_RPA['ranking']
@@ -623,7 +637,7 @@ MMH_IMBo = pandas.DataFrame(MMH_IMB.copy())
 MMH_IMBo = MMH_IMBo.sort_values(by=['ranking'])
 # print(MMH_IMBo)
 
-
+# Eval Ling por actividad
 # Utilizando el vector de pesos por importancia y el vector de pesos por participación, se calcula el peso final que tendrá cada criterio
 # Pesos por importancia = pesoscriterios
 # Pesos por participación = pesoparticipacion
@@ -633,244 +647,311 @@ Eval_LingSum = 0
 for columna in pesoscriterios.index:
     Eval_Ling1[columna] = pesoscriterios[columna] * pesoparticipacion[columna]
     Eval_LingSum += Eval_Ling1[columna]  # ∑(w^s X w^o)
-#print("\n", Eval_LingSum, "\n")
+# Ok
+# print("\n", Eval_LingSum, "\n")
 # Normalización de pesos
 for columna in Eval_Ling1:
     Eval_Ling1[columna] = Eval_Ling1[columna] / Eval_LingSum
+    suma += Eval_Ling1[columna]
 
-imaxmin = {}
-for actividad in actividades:
-    items = tactividades[tactividades == actividad].index
-    imaxmin[actividad] = {'min': min(items), 'max': max(items)+1}
+Eval_Ling_t1 = pandas.DataFrame(columnas.copy(), actividad_indices.keys())
+for columna in dsInferior.columns.tolist():
+    for fila in actividad_indices:
+        Eval_Ling_t1[columna][fila] = dsInferior.iloc[actividad_indices[fila]][columna].mean()
 
-# Se toma la evaluación con el valor máximo de cada criterio (v_i) por evento.
-Eval_Ling_EMax = pandas.DataFrame(columns=dsInferior.columns)
-Eval_Ling_EMin = pandas.DataFrame(columns=dsInferior.columns)
-
-for actividad in actividades:
-    datamax = []
-    datamin = []
-    for columna in dsInferior.columns:
-        datamax.append(max(dsInferior[columna].tolist()[
-                       imaxmin[actividad]['min']: imaxmin[actividad]['max']]))
-        datamin.append(min(dsSuperior[columna].tolist()[
-                       imaxmin[actividad]['min']: imaxmin[actividad]['max']]))
-    Eval_Ling_EMax = Eval_Ling_EMax.append(pandas.Series(
-        dict(zip(dsInferior.columns, datamax)), name=actividad))
-    Eval_Ling_EMin = Eval_Ling_EMin.append(pandas.Series(
-        dict(zip(dsSuperior.columns, datamin)), name=actividad))
-
-# print(Eval_Ling_EMax)
-# print(Eval_Ling_EMin)
-
-# Se multiplican cada criterio de las matrices generadas por el peso que le corresponde
-Eval_Ling_Optimista = pandas.DataFrame(Eval_Ling_EMax.copy())
-Eval_Ling_Pesimista = pandas.DataFrame(Eval_Ling_EMin.copy())
-
-for actividad in actividades:
-    for columna in dsInferior.columns:
-        Eval_Ling_Optimista[columna][actividad] = Eval_Ling_Optimista[columna][actividad] * \
+Eval_Ling_Pesimista = pandas.DataFrame(Eval_Ling_t1.copy())
+for columna in dsInferior.columns.tolist():
+    for fila in actividad_indices:
+        Eval_Ling_Pesimista[columna][fila] = Eval_Ling_Pesimista[columna][fila] * \
             Eval_Ling1[columna]
-        Eval_Ling_Pesimista[columna][actividad] = Eval_Ling_Pesimista[columna][actividad] * \
-            Eval_Ling1[columna]
+
+
+Elinguisticas = {
+    'es': ['',
+        'Pésimo',
+        'Malo',
+        'Muy pobre',
+        'Pobre',
+        'Suficiente',
+        'Normal',
+        'Bueno',
+        'Muy bueno',
+        'Bastante bueno',
+        'Satisfecho	',
+        'Muy Satisfecho',
+        'Excelente',
+        'Impresionante'
+    ],'en': [
+        '',
+        'Terrible',
+        'Nothing',
+        'Very poor',
+        'Poor',
+        'Sufficient',
+        'Average',
+        'Good',
+        'A Lot',
+        'Quite a Lot',
+        'Satisfied',
+        'Very Satisfied',
+        'Excellent',
+        'Impressive'
+    ]}
 
 BetaAvg = []
 S = []
 Alpha = []
-for actividad in actividades:
-    sumatoria = Eval_Ling_Optimista.loc[actividad].sum()
-    BetaAvg.append(sumatoria)
-    S.append(int(numpy.round(sumatoria)))
-    Alpha.append(sumatoria - numpy.round(sumatoria))
-Eval_Ling_Optimista['BetaAvg'] = BetaAvg
-Eval_Ling_Optimista['S'] = S
-Eval_Ling_Optimista['Alpha'] = Alpha
-
-BetaAvg = []
-S = []
-Alpha = []
+Etiquetas = []
 for actividad in actividades:
     sumatoria = Eval_Ling_Pesimista.loc[actividad].sum()
     BetaAvg.append(sumatoria)
-    S.append(int(numpy.round(sumatoria)))
-    Alpha.append(sumatoria - numpy.round(sumatoria))
+    S.append(nround(sumatoria))
+    Alpha.append(sumatoria - nround(sumatoria))
+    Etiquetas.append(Elinguisticas[lang][nround(sumatoria)])
 Eval_Ling_Pesimista['BetaAvg'] = BetaAvg
 Eval_Ling_Pesimista['S'] = S
 Eval_Ling_Pesimista['Alpha'] = Alpha
+Eval_Ling_Pesimista['Etiqueta_Linguistica'] = Etiquetas
 
-ELinguisticas = [
-    '',
-    'Poco',
-    'Por encima de Poco',
-    'Por debajo de Algo',
-    'Algo',
-    'Por encima de Algo',
-    'Por debajo de Normal',
-    'Normal',
-    'Por encima de normal',
-    'Por debajo de Bastante',
-    'Bastante',
-    'Por encima de Bastante',
-    'Por debajo de Muchísimo',
-    'Muchísimo'
-]
+# print(Eval_Ling_Pesimista)
 
-etiquetas = []
+Eval_Ling_t3 = pandas.DataFrame(columnas.copy(), actividad_indices.keys())
+for columna in dsSuperior.columns.tolist():
+    for fila in actividad_indices:
+        Eval_Ling_t3[columna][fila] = dsSuperior.iloc[actividad_indices[fila]][columna].mean()
+
+Eval_Ling_Optimista = pandas.DataFrame(Eval_Ling_t1.copy())
+for columna in dsSuperior.columns.tolist():
+    for fila in actividad_indices:
+        Eval_Ling_Optimista[columna][fila] = Eval_Ling_t3[columna][fila] * \
+            Eval_Ling1[columna]
+
+BetaAvg = []
+S = []
+Alpha = []
+Etiquetas = []
 for actividad in actividades:
-    etiquetas.append(ELinguisticas[Eval_Ling_Optimista['S'][actividad]])
-Eval_Ling_Optimista['ETIQUETA LINGÜÍSTICA'] = etiquetas
+    sumatoria = Eval_Ling_Optimista.loc[actividad].sum()
+    BetaAvg.append(sumatoria)
+    S.append(nround(sumatoria))
+    Alpha.append(sumatoria - nround(sumatoria))
+    Etiquetas.append(Elinguisticas[lang][nround(sumatoria)])
+Eval_Ling_Optimista['BetaAvg'] = BetaAvg
+Eval_Ling_Optimista['S'] = S
+Eval_Ling_Optimista['Alpha'] = Alpha
+Eval_Ling_Optimista['Etiqueta_Linguistica'] = Etiquetas
 
-etiquetas = []
+Eval_Ling_Media = pandas.DataFrame(
+    columns=['BetaAvg', 'S', 'Alpha', 'Etiqueta_Linguistica'])
 for actividad in actividades:
-    etiquetas.append(ELinguisticas[Eval_Ling_Pesimista['S'][actividad]])
-Eval_Ling_Pesimista['ETIQUETA LINGÜÍSTICA'] = etiquetas
+    op = ((1 - rho) * Eval_Ling_Pesimista['BetaAvg'][actividad]
+          ) + (rho * Eval_Ling_Optimista['BetaAvg'][actividad])
+    Eval_Ling_Media.loc[actividad] = [
+        op,
+        nround(op),
+        nround(op) - op,
+        Elinguisticas[lang][nround(op)]
+    ]
+mean = Eval_Ling_Media['BetaAvg'].mean()
+Evento_Eval_Ling_Media = {
+    'BetaAvg': mean,
+    'S': nround(mean),
+    'Alpha': mean - nround(mean),
+    'Etiqueta_Linguistica': Elinguisticas[lang][nround(mean)]
+}
 
-Eval_Ling_Media = pandas.DataFrame()
-for actividad in actividades:
-    promedio = mean([Eval_Ling_Optimista['BetaAvg'][actividad],
-                    Eval_Ling_Pesimista['BetaAvg'][actividad]])
-    Eval_Ling_Media = Eval_Ling_Media.append(
-        pandas.Series(
-            dict(
-                zip([
-                    'BetaAvg',
-                    'S',
-                    'Alpha'],
-                    [
-                        promedio,
-                        int(round(promedio)),
-                        promedio - round(promedio)
-                ])
-            ),
-            name=actividad
-        )
-    )
-
-etiquetas = []
-for actividad in actividades:
-    etiquetas.append(ELinguisticas[int(Eval_Ling_Media['S'][actividad])])
-Eval_Ling_Media['ETIQUETA LINGÜÍSTICA'] = etiquetas
-
-BetaAvg = Eval_Ling_Media['BetaAvg'].mean()
-S = round(BetaAvg)
-Alpha = BetaAvg - S
-EtiquetaLinguistica = ELinguisticas[int(S)]
-
-#print(BetaAvg, S, Alpha, EtiquetaLinguistica)
-
-
-VPD_Max = pandas.DataFrame(columns=dimensiones)
+# Valoraciones por Dim(F)
+VPD_Pesimista = pandas.DataFrame(columns=dimensiones)
 tcolumnas = dsInferior.columns.tolist()
 for actividad in actividades:
     datos = {}
     for dimension in dimensiones:
         columnas = [item for item in tcolumnas if item.startswith(dimension)]
-        datos[dimension] = dsInferior.loc[imaxmin[actividad]['min']:imaxmin[actividad]['max']-1, columnas].max().max()
-    VPD_Max = VPD_Max.append(pandas.Series(datos.copy(), name=actividad))
-#print(VPD_Max)
+        datos[dimension] = Eval_Ling_t1.loc[actividad, columnas].mean()
+    VPD_Pesimista.loc[actividad] = datos
+#print(VPD_Pesimista)
 
-
-VPD_Min = pandas.DataFrame(columns=dimensiones)
-tcolumnas = dsSuperior.columns.tolist()
+VPD_Optimista = pandas.DataFrame(columns=dimensiones)
+tcolumnas = dsInferior.columns.tolist()
 for actividad in actividades:
     datos = {}
     for dimension in dimensiones:
         columnas = [item for item in tcolumnas if item.startswith(dimension)]
-        datos[dimension] = dsSuperior.loc[imaxmin[actividad]['min']:imaxmin[actividad]['max']-1, columnas].min().min()
-    VPD_Min = VPD_Min.append(pandas.Series(datos.copy(), name=actividad))
-#print(VPD_Min)
+        datos[dimension] = Eval_Ling_t3.loc[actividad, columnas].mean()
+    VPD_Optimista.loc[actividad] = datos
+#print(VPD_Optimista)
+
+VPD_Evento = {
+    'pesimista': {
+        'BetaAvg': numpy.nanmean(VPD_Pesimista.values),
+        'S': nround(numpy.nanmean(VPD_Pesimista.values)),
+        'alpha': nround(numpy.nanmean(VPD_Pesimista.values)) - numpy.nanmean(VPD_Pesimista.values)
+    },
+    'optimista': {
+        'BetaAvg': numpy.nanmean(VPD_Optimista.values),
+        'S': nround(numpy.nanmean(VPD_Optimista.values)),
+        'alpha': nround(numpy.nanmean(VPD_Optimista.values)) - numpy.nanmean(VPD_Optimista.values)
+    }
+}
+VPD_Evento['media'] = {'BetaAvg': ((1 - rho) * VPD_Evento['pesimista']['BetaAvg'])+(rho * VPD_Evento['optimista']['BetaAvg'])}
+VPD_Evento['media']['S'] = nround(VPD_Evento['media']['BetaAvg'])
+VPD_Evento['media']['alpha'] = VPD_Evento['media']['S'] - VPD_Evento['media']['BetaAvg']
+VPD_Evento['Etiqueta_Linguistica'] = Elinguisticas[lang][int(VPD_Evento['media']['S'])]
+#print(VPD_Evento)
 
 VPD = {}
 for dimension in dimensiones:
     pesimista = pandas.DataFrame(columns=['BetaAvg', 'S', 'alpha'])
     optimista = pandas.DataFrame(columns=['BetaAvg', 'S', 'alpha'])
-    media = pandas.DataFrame(columns=['BetaAvg', 'S', 'alpha', 'ETIQUETA LINGÜÍSTICA'])
+    media = pandas.DataFrame(columns=['BetaAvg', 'S', 'alpha', 'Etiqueta_Linguistica'])
 
     for actividad in actividades:
-        VPDBetaAvg = VPD_Max.loc[actividad, dimension]
-        VPDS = round(VPDBetaAvg)
-        VPDalpha = VPDBetaAvg - VPDS
-        optimista = optimista.append(pandas.Series(
-            {'BetaAvg': VPDBetaAvg, 'S': VPDS, 'alpha': VPDalpha}, name=actividad))
+        VPDBetaAvgPesimista = VPD_Pesimista.loc[actividad, dimension]
+        VPDBetaAvgOptimista = VPD_Optimista.loc[actividad, dimension]
 
-        VPDBetaAvg = VPD_Min.loc[actividad, dimension]
-        VPDS = round(VPDBetaAvg)
-        VPDalpha = VPDBetaAvg - VPDS
-        pesimista = pesimista.append(pandas.Series(
-            {'BetaAvg': VPDBetaAvg, 'S': VPDS, 'alpha': VPDalpha}, name=actividad))
+        if math.isnan(VPDBetaAvgPesimista) or math.isnan(VPDBetaAvgOptimista):
+            optimista.loc[actividad] = {'BetaAvg': '', 'S': '', 'alpha': ''}
+            pesimista.loc[actividad] = {'BetaAvg': '', 'S': '', 'alpha': ''}
+            media.loc[actividad] = {'BetaAvg': '', 'S': '', 'alpha': '', 'Etiqueta_Linguistica': ''}
+        else:            
+            VPDSPesimista = nround(VPDBetaAvgPesimista)
+            VPDalphaPesimista = VPDBetaAvgPesimista - VPDSPesimista
+            pesimista.loc[actividad] = {'BetaAvg': VPDBetaAvgPesimista, 'S': VPDSPesimista, 'alpha': VPDalphaPesimista}
 
-        VPDBetaAvg = mean([VPD_Max.loc[actividad, dimension],VPD_Min.loc[actividad, dimension]])
-        VPDS = round(VPDBetaAvg)
-        VPDalpha = VPDBetaAvg - VPDS
-        VPDetiqueta = ELinguisticas[int(VPDS)]
-        media = media.append(pandas.Series(
-            {'BetaAvg': VPDBetaAvg, 'S': VPDS, 'alpha': VPDalpha, 'ETIQUETA LINGÜÍSTICA': VPDetiqueta}, name=actividad))
+            VPDSOptimista = nround(VPDBetaAvgOptimista)
+            VPDalphaOptimista = VPDBetaAvgOptimista - VPDSOptimista
+            optimista.loc[actividad] = {'BetaAvg': VPDBetaAvgOptimista, 'S': VPDSOptimista, 'alpha': VPDalphaOptimista}
+
+            VPDBetaAvg = ((1-rho) * VPDBetaAvgPesimista) + (rho * VPDBetaAvgOptimista)
+            
+            VPDS = nround(VPDBetaAvg)
+            VPDalpha = VPDBetaAvg - VPDS
+            VPDetiqueta = Elinguisticas[lang][int(VPDS)]
+            media.loc[actividad] = {'BetaAvg': VPDBetaAvg, 'S': VPDS, 'alpha': VPDalpha, 'Etiqueta_Linguistica': VPDetiqueta}
 
         VPD[dimension, 'pesimista'] = pesimista
         VPD[dimension, 'optimista'] = optimista
         VPD[dimension, 'media'] = media
+#print(VPD)
 
 
-shutil.rmtree('output', ignore_errors=True)
-shutil.copytree('base', 'output')
-shutil.copy('info.js', os.path.join('output', 'datos', 'info.js'))
+shutil.rmtree(outputDir, ignore_errors=True)
+shutil.copytree('base', outputDir)
+shutil.copy(cfgFile, os.path.join(outputDir, 'datos', 'info.js'))
 
-#Tablas informe 
-#print("Multimoora intervalo inferior")
-#print(MMI_IMBo)
-jdata = MMI_IMBo.to_json()
-with open(os.path.join('output', 'datos', 'MMI_IMBo.js'), 'w') as f:
-    f.write('var MMI_IMBo = ')
-    f.write(jdata)
+with open(os.path.join(outputDir, 'datos', 'config.js'), 'w') as f:
+    f.write('var clang = "')
+    f.write(lang)
+    f.write('";')
+    f.write('var rho = ')
+    f.write(str(rho))
     f.write(';')
 
-#print("Multimoora intervalo superior")
-#print(MMS_IMBo)
-jdata = MMS_IMBo.to_json()
-with open(os.path.join('output', 'datos', 'MMS_IMBo.js'), 'w') as f:
-    f.write('var MMS_IMBo = ')
-    f.write(jdata)
+# Tablas informe
+# print("Multimoora intervalo inferior")
+dMMI_RS = MMI_RS.to_json(orient="index")
+dMMI_RPA = MMI_i_RPA.to_json(orient="index")
+dMMI_FMF = MMI_FMF.to_json(orient="index")
+dMMI_RPM = MMI_RPM.to_json(orient="index")
+dMMI_IMB = MMI_IMBo.to_json(orient="index")
+with open(os.path.join(outputDir, 'datos', 'MMI.js'), 'w') as f:
+    f.write('var MMI_RS = ')
+    f.write(dMMI_RS)
+    f.write(';')
 
-#print("Multimoora Valor central")
-#print(MMH_IMBo)
-jdata = MMH_IMBo.to_json()
-with open(os.path.join('output', 'datos', 'MMH_IMBo.js'), 'w') as f:
-    f.write('var MMH_IMBo = ')
-    f.write(jdata)
+    f.write('var MMI_RPA = ')
+    f.write(dMMI_RPA)
+    f.write(';')
 
-#print("Valoración lingüística por actividad")
-#print("Optimista")
-#print(Eval_Ling_Optimista)
+    f.write('var MMI_FMF = ')
+    f.write(dMMI_FMF)
+    f.write(';')
+
+    f.write('var MMI_RPM = ')
+    f.write(dMMI_RPM)
+    f.write(';')
+
+    f.write('var MMI_IMB = ')
+    f.write(dMMI_IMB)
+    f.write(';')
+
+
+dMMS_RS = MMS_RS.to_json(orient='index')
+dMMS_RPA = MMS_i_RPA.to_json(orient='index')
+dMMS_FMF = MMS_FMF.to_json(orient='index')
+dMMS_RPM = MMS_RPM.to_json(orient='index')
+dMMS_IMB = MMS_IMBo.to_json(orient='index')
+with open(os.path.join(outputDir, 'datos', 'MMS.js'), 'w') as f:
+    f.write('var MMS_RS = ')
+    f.write(dMMS_RS)
+    f.write(';')
+
+    f.write('var MMS_RPA = ')
+    f.write(dMMS_RPA)
+    f.write(';')
+
+    f.write('var MMS_FMF = ')
+    f.write(dMMS_FMF)
+    f.write(';')
+
+    f.write('var MMS_RPM = ')
+    f.write(dMMS_RPM)
+    f.write(';')
+
+    f.write('var MMS_IMB = ')
+    f.write(dMMS_IMB)
+    f.write(';')
+
+dMMH_RPM = MMH_RPM.to_json(orient='index')
+dMMH_IMB = MMH_IMBo.to_json(orient='index')
+with open(os.path.join(outputDir, 'datos', 'MMH.js'), 'w') as f:
+    f.write('var MMH_RPM = ')
+    f.write(dMMH_RPM)
+    f.write(';')
+
+    f.write('var MMH_IMB = ')
+    f.write(dMMH_IMB)
+    f.write(';')
+
+
+# print("Valoración lingüística por actividad")
+# print("Optimista")
+# print(Eval_Ling_Optimista)
 jdata = Eval_Ling_Optimista.to_json(orient='index')
-with open(os.path.join('output', 'datos', 'Eval_Ling_Optimista.js'), 'w') as f:
+with open(os.path.join(outputDir, 'datos', 'Eval_Ling_Optimista.js'), 'w') as f:
     f.write('var Eval_Ling_Optimista = ')
     f.write(jdata)
 
-#print("Pesimista")
-#print(Eval_Ling_Pesimista)
+# print("Pesimista")
+# print(Eval_Ling_Pesimista)
 jdata = Eval_Ling_Pesimista.to_json(orient='index')
-with open(os.path.join('output', 'datos', 'Eval_Ling_Pesimista.js'), 'w') as f:
+with open(os.path.join(outputDir, 'datos', 'Eval_Ling_Pesimista.js'), 'w') as f:
     f.write('var Eval_Ling_Pesimista = ')
     f.write(jdata)
 
-#print("Valor central")
-#print(Eval_Ling_Media)
+# print("Valor central")
+# print(Eval_Ling_Media)
 jdata = Eval_Ling_Media.to_json(orient='index')
-with open(os.path.join('output', 'datos', 'Eval_Ling_Media.js'), 'w') as f:
+with open(os.path.join(outputDir, 'datos', 'Eval_Ling_Media.js'), 'w') as f:
     f.write('var Eval_Ling_Media = ')
     f.write(jdata)
 
-#print("Valoración general del evento")
-#print(EtiquetaLinguistica)
-with open(os.path.join('output', 'datos', 'EtiquetaLinguistica.js'), 'w') as f:
+jdata = json.dumps(VPD_Evento)
+with open(os.path.join(outputDir, 'datos', 'VPD_Evento.js'), 'w') as f:
+    f.write('var VPD_Evento = ')
+    f.write(jdata)
+
+# print("Valoración general del evento")
+# print(EtiquetaLinguistica)
+with open(os.path.join(outputDir, 'datos', 'EtiquetaLinguistica.js'), 'w') as f:
     f.write('var EtiquetaLinguistica = "')
-    f.write(EtiquetaLinguistica)
+    f.write('')
     f.write('";')
 
-#print("Valoración lingüística de cada dimensión por actividad y evento")
-#for dimension in dimensiones:
+# print("Valoración lingüística de cada dimensión por actividad y evento")
+# for dimension in dimensiones:
 #    print(VPD[dimension, 'media'])
-with open(os.path.join('output', 'datos', 'dsValoraciones.js'), 'w') as f:
+with open(os.path.join(outputDir, 'datos', 'dsValoraciones.js'), 'w') as f:
     f.write('var dsValoraciones = {')
     for dimension in dimensiones:
         f.write('"' + dimension + '":')
@@ -879,24 +960,24 @@ with open(os.path.join('output', 'datos', 'dsValoraciones.js'), 'w') as f:
     f.write('}')
 
 
-#print(dsPrioridades)
+# print(dsPrioridades)
 jdata = dsPrioridades.to_json(orient='records')
-with open(os.path.join('output', 'datos', 'dsPrioridades.js'), 'w') as f:
+with open(os.path.join(outputDir, 'datos', 'dsPrioridades.js'), 'w') as f:
     f.write('var dsPrioridades = ')
     f.write(jdata)
-#print(dsEvaluacion)
+# print(dsEvaluacion)
 jdata = dsEvaluacion.to_json(orient='records')
-with open(os.path.join('output', 'datos', 'dsEvaluacion.js'), 'w') as f:
+with open(os.path.join(outputDir, 'datos', 'dsEvaluacion.js'), 'w') as f:
     f.write('var dsEvaluacion = ')
     f.write(jdata)
-#print(dsInferior)
+# print(dsInferior)
 jdata = dsInferior.to_json(orient='records')
-with open(os.path.join('output', 'datos', 'dsInferior.js'), 'w') as f:
+with open(os.path.join(outputDir, 'datos', 'dsInferior.js'), 'w') as f:
     f.write('var dsInferior = ')
     f.write(jdata)
-#print(dsSuperior)
+# print(dsSuperior)
 jdata = dsSuperior.to_json(orient='records')
-with open(os.path.join('output', 'datos', 'dsSuperior.js'), 'w') as f:
+with open(os.path.join(outputDir, 'datos', 'dsSuperior.js'), 'w') as f:
     f.write('var dsSuperior = ')
     f.write(jdata)
 
@@ -904,7 +985,7 @@ estadisticos = {}
 for actividad in actividades:
     estadisticos[actividad] = {
         'TipoActividad': rawData.loc[rawData['ACTIVIDAD'] == actividad, 'TIPO DE ACTIVIDAD'].unique()[0],
-        'Num_Eval': rawData.loc[rawData['ACTIVIDAD'] == actividad, 'GENERO'].count(),
+        'Num_Eval': len(rawData.loc[rawData['ACTIVIDAD'] == actividad, 'GENERO']),
         'Hombres': rawData.loc[(rawData['ACTIVIDAD'] == actividad) & (rawData['GENERO'] == 'Hombre'), 'GENERO'].count(),
         'Mujeres': rawData.loc[(rawData['ACTIVIDAD'] == actividad) & (rawData['GENERO'] == 'Mujer'), 'GENERO'].count(),
         '<15': rawData.loc[(rawData['ACTIVIDAD'] == actividad) & (rawData['EDAD'] < 15), 'GENERO'].count(),
@@ -912,9 +993,10 @@ for actividad in actividades:
         '35-69': rawData.loc[(rawData['ACTIVIDAD'] == actividad) & (rawData['EDAD'] > 35) & (rawData['EDAD'] < 70), 'GENERO'].count(),
         '>70': rawData.loc[(rawData['ACTIVIDAD'] == actividad) & (rawData['EDAD'] > 69), 'GENERO'].count(),
     }
-estadisticos = pandas.DataFrame.from_dict(estadisticos, orient='index', columns=['TipoActividad', 'Num_Eval', 'Hombres', 'Mujeres', '<15', '15-34', '35-69', '>70'])
-#print(estadisticos)
-with open(os.path.join('output', 'datos', 'estadisticos.js'), 'w') as f:
+estadisticos = pandas.DataFrame.from_dict(estadisticos, orient='index', columns=[
+                                          'TipoActividad', 'Num_Eval', 'Hombres', 'Mujeres', '<15', '15-34', '35-69', '>70'])
+# print(estadisticos)
+with open(os.path.join(outputDir, 'datos', 'estadisticos.js'), 'w') as f:
     f.write('var estadisticos = ')
     f.write(estadisticos.to_json(orient='index'))
 
@@ -923,15 +1005,24 @@ for actividad in actividades:
     preguntas = {}
     for pregunta in rawData.filter(regex='Q').columns:
         qx = rawData.loc[rawData['ACTIVIDAD'] == actividad, pregunta]
-        preguntas[pregunta] = (qx.value_counts() / qx.count() * 100)['si']
+        preguntas[pregunta] = int(qx.value_counts()['si'])
+
     PAfirmativas[actividad] = preguntas
 
-#print(PAfirmativas)
-with open(os.path.join('output', 'datos', 'pAfirmativas.js'), 'w') as f:
+
+PAfirmativasT = {}
+for pregunta in rawData.filter(regex='Q').columns:
+    PAfirmativasT[pregunta] = len(rawData[rawData[pregunta] == 'si'])
+
+# print(PAfirmativas)
+with open(os.path.join(outputDir, 'datos', 'pAfirmativas.js'), 'w') as f:
     f.write('var pAfirmativas = ')
     f.write(json.dumps(PAfirmativas))
 
-with open(os.path.join('output', 'datos', 'pvcostben.js'), 'w') as f:
+    f.write(';var pAfirmativasT = ')
+    f.write(json.dumps(PAfirmativasT))
+
+with open(os.path.join(outputDir, 'datos', 'pvcostben.js'), 'w') as f:
     f.write('var pprefd = ')
     f.write(pesosdimensiones.to_json())
 
