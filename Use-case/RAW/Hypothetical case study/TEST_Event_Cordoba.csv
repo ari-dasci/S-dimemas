@@ -1,0 +1,13 @@
+EVENTO,ACTIVIDAD,TIPO DE ACTIVIDAD,TIMESTAMP,ALIAS,EDAD,GENERO,PROVINCIA,Q1,Q2,Q3,ESCALA,Ponente - Vocalización,Ponente - Claridad de las expresiones,Ponente - Dominio del tema,Ponente - Facilidad de palabra,Tema - Claridad de las transparencias,Tema - Adaptado al nivel,Tema - Aplicabilidad,Tema - Ejemplos prácticos,Evento - Duración,Evento - Tema,Evento - Accesibilidad
+Night-Córdoba_TEST,Act_1-CÓRDOBA,Charlas,1700000014,314,41,Hombre,Granada,si,si,si,3,03+3:3,05+3:3,04+3:3,,,06+3:3,,01+3:3,,02+3:3,
+Night-Córdoba_TEST,Act_1-CÓRDOBA,Charlas,1700000015,315,48,Mujer,Granada,si,si,si,3,04+3:3,03+3:3,05+3:3,02+3:3,01+3:3,,,,,07-2:2,06-1:1
+Night-Córdoba_TEST,Act_1-CÓRDOBA,Charlas,1700000016,316,38,Hombre,Granada,si,si,si,3,03+2:2,06+3:3,01+2:2,04+2:2,02+3:3,05+3:3,,,,,
+Night-Córdoba_TEST,Act_2-CÓRDOBA,Charlas,1700000017,317,40,Hombre,Granada,si,si,si,7,06+3:6,02+7:7,05+4:7,04+5:7,03+5:5,01+6:6,07+4:6,08-1:4,09+5:7,10+5:5,11-1:4
+Night-Córdoba_TEST,Act_2-CÓRDOBA,Charlas,1700000018,318,19,Mujer,Granada,si,si,si,5,03+5:5,05+4:4,01-5:5,06+3:3,04+4:4,02+5:5,,,,,
+Night-Córdoba_TEST,Act_2-CÓRDOBA,Charlas,1700000019,319,25,Hombre,Granada,si,si,si,3,,,06+2:2,05-3:3,04-2:2,01+3:3,,02+2:2,03+2:2,,
+Night-Córdoba_TEST,Act_3-CÓRDOBA,Charlas,1700000020,320,25,Mujer,Granada,si,si,si,3,04+3:3,06+2:2,01+3:3,05+3:3,02+3:3,03+2:2,,,,,
+Night-Córdoba_TEST,Act_3-CÓRDOBA,Charlas,1700000021,321,22,Hombre,Granada,si,si,si,7,01+5:5,04+5:5,,,02+2:3,05+3:3,06+5:5,03-1:1,,,
+Night-Córdoba_TEST,Act_3-CÓRDOBA,Charlas,1700000022,322,35,Hombre,Granada,si,no,si,7,01+3:3,03+7:7,02+5:5,04+2:6,05+5:5,06+3:5,,,,,
+Night-Córdoba_TEST,Act_4-CÓRDOBA,Charlas,1700000023,323,41,Mujer,Granada,si,si,si,3,,,04+3:3,01+3:3,05+3:3,,,,02+3:3,03+3:3,
+Night-Córdoba_TEST,Act_4-CÓRDOBA,Charlas,1700000024,324,26,Hombre,Granada,si,si,si,3,05+3:3,01+3:3,02+2:2,03-1:1,04+3:3,,,,,,
+Night-Córdoba_TEST,Act_4-CÓRDOBA,Charlas,1700000025,325,24,Mujer,Granada,si,si,si,3,04+3:3,,,06+2:2,01-2:2,02+2:2,,,05+2:2,03+2:2,

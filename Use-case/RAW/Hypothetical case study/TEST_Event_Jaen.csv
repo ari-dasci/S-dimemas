@@ -1,0 +1,13 @@
+EVENTO,ACTIVIDAD,TIPO DE ACTIVIDAD,TIMESTAMP,ALIAS,EDAD,GENERO,PROVINCIA,Q1,Q2,Q3,ESCALA,Ponente - Vocalización,Ponente - Claridad de las expresiones,Ponente - Dominio del tema,Ponente - Facilidad de palabra,Tema - Claridad de las transparencias,Tema - Adaptado al nivel,Tema - Aplicabilidad,Tema - Ejemplos prácticos,Evento - Duración,Evento - Tema,Evento - Accesibilidad
+Night-Jaén_TEST,Act_1-JAÉN,Charlas,1700000026,326,48,Hombre,Granada,si,si,si,7,06+7:7,04+7:7,01+4:7,03+4:6,02-2:6,05+5:6,,,,,
+Night-Jaén_TEST,Act_1-JAÉN,Charlas,1700000027,327,40,Hombre,Granada,si,si,si,5,06+2:4,03+2:4,02+2:4,04+2:4,01+2:4,05+2:4,10+2:4,09+2:4,07+2:4,08+2:4,11+2:4
+Night-Jaén_TEST,Act_1-JAÉN,Talleres,1700000028,328,38,Mujer,Granada,si,si,si,5,02+4:4,05+4:5,06+5:5,03+3:3,01+4:4,04+3:3,,,,,
+Night-Jaén_TEST,Act_2-JAÉN,Talleres,1700000029,329,19,Hombre,Granada,si,si,si,5,01+5:5,02+5:5,03+5:5,04+5:5,05+5:5,06+5:5,,,,,
+Night-Jaén_TEST,Act_2-JAÉN,Talleres,1700000030,330,19,Mujer,Granada,si,si,si,5,03+4:4,01+3:3,04+5:5,02+3:3,05+4:4,06+5:5,,,,,
+Night-Jaén_TEST,Act_2-JAÉN,Talleres,1700000031,331,40,Hombre,Granada,si,si,si,7,05+4:7,04+4:7,03+4:7,02+4:7,01+4:7,06+4:7,11+4:7,10+4:7,07+4:7,08+4:7,09+4:7
+Night-Jaén_TEST,Act_3-JAÉN,Talleres,1700000032,332,18,Hombre,Granada,si,si,si,3,,,,01+3:3,04+3:3,02+3:3,06+3:3,03+3:3,05+3:3,,
+Night-Jaén_TEST,Act_3-JAÉN,Talleres,1700000033,333,15,Mujer,Granada,si,si,no,5,03+2:2,04+5:5,02+4:4,01+5:5,05+5:5,06+4:4,,,,,
+Night-Jaén_TEST,Act_3-JAÉN,Talleres,1700000034,334,51,Hombre,Granada,si,si,si,3,03+3:3,04+3:3,05+3:3,01+3:3,02+3:3,,,,,,
+Night-Jaén_TEST,Act_4-JAÉN,Talleres,1700000035,335,41,Mujer,Granada,si,si,si,3,06+3:3,03+3:3,,,01+3:3,05+3:3,,,,02+3:3,04+3:3
+Night-Jaén_TEST,Act_4-JAÉN,Talleres,1700000036,336,48,Hombre,Granada,si,si,no,5,04-3:3,02+3:5,,,05+2:2,01+3:5,03+4:4,06+4:5,,,
+Night-Jaén_TEST,Act_4-JAÉN,Talleres,1700000037,337,24,Hombre,Granada,si,si,si,7,06+7:7,03+7:7,02+7:7,,,,01+7:7,05+7:7,04+7:7,,
