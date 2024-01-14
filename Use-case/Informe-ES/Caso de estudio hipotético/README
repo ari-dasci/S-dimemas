@@ -1,0 +1,17 @@
+############################
+En esta carpeta se encuentra el reporte en español de las evaluaciones obtenidas en las actividades de prueba. Estas actividades de prueba son utilizadas para mostrar el informe por proyecto. 
+Los elementos que componen el informe por proyecto son similares a los que se muestran por evento, el único cambio es la presentación de la información agrupada por eventos
+• Datos estadísticos de las valoraciones del Proyecto. Número de asistentes y rangos de edad.
+• Satisfacción final del Proyecto dada en una etiqueta lingüística unificada en S_13.
+• Valoraciones colectivas de cada evento y sus proyectos en tres escenarios: Pesimista, Optimista y Combinado. Estas valoraciones también están dadas en etiquetas lingüísticas unificadas en S_13.
+• Valoraciones colectivas por dimensión por evento y actividades. También con etiquetas lingüísticas unificadas en S_13.
+• Valoración colectiva cuantitativa de los eventos y sus actividades a partir de los rankings generados por los índices del modelo Citizen Crowd Decision Making (CCDM). Los rankings son presentan en los tres escenarios: Pesimista, Optimista y Combinado.
+• El resultado de una encuesta al final de las valoraciones de cada evento y sus actividades.
+############################
+Los conjuntos de etiquetas lingüísticas de entrada con las que se valoraron las actividades de cada evento que conforman el proyecto son:
+S_3 = {Poco, Normal, Mucho}. 
+S_5 = {Poco, Normal, Bastante, Mucho}
+S_7 = {Nada, Pobre, Regular, Normal, Mucho, Muchísimo, Impresionante}.
+El conjunto de etiquetas lingüísticas que engloban los conjuntos de entrada es:
+S_13 = {Pésimo, Malo, Muy pobre, Pobre, Suficiente, Normal, Bueno, Muy bueno, Bastante, Satisfecho, Muy Satisfecho, Excelente, Impresionante}	
+############################
