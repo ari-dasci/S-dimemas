@@ -1,2 +1,34 @@
-In this folder you will find the Report in Spanish of the evaluations of the activities in the Researchers' Night Granada 2023.
-In addition, the reports of test cases are attached. 
+####################################################################################
+En esta carpeta se encuentra el reporte en español de las evaluaciones obtenidas en las actividades:
+•	Una app para evaluar eventos de divulgación científica: DIME+
+•	La naturaleza, inspiradora de Inteligencia Artificial
+•	Inteligencia Artificial: entre el mito y la realidad
+•	SintonIA: la IA en las ondas
+•	Construyendo el Futuro: El Poder del Gemelo Digital en Edificios
+•	Planificación Automática, o cómo la IA también se preocupa por el futuro
+•	Tu cráneo me suena
+El informe es creado a partir de las valoraciones dadas a las siete actividades que conforman el evento Night23-Granada. 
+Los elementos que componen el informe son
+•	Datos estadísticos de las valoraciones del evento. Número de asistentes y rangos de edad.
+•	Satisfacción final del evento dada en una etiqueta lingüística unificada en S_13.
+•	Valoraciones colectivas en tres escenarios: Pesimista, Optimista y Combinado. Estas valoraciones también están dadas en etiquetas lingüísticas unificadas en S_13.
+•	Valoraciones colectivas por dimensión. También con etiquetas lingüísticas unificadas en S_13.
+•	Valoración colectiva cuantitativa a partir de los rankings generados por los índices del modelo Citizen Crowd Decision Making (CCDM). Los rankings son presentan en los tres escenarios: Pesimista, Optimista y Combinado.
+•	El resultado de una encuesta al final de las valoraciones, estos datos están dados por actividades.
+
+####################################################################################
+Etiquetas lingüísticas Unificadas: Se tienen tres conjuntos de entrada. Los expertos ciudadanos pueden elegir la que ellos consideren representa mejor su opinión. Cada valoración de cada evento puede estar dada en diferente escala, aún cuando sea el mismo experto evaluando actividades  diferentes. 
+Los conjuntos de etiquetas lingüísticas de entrada con las que se valoraron las actividades son:
+S_3 = {Poco, Normal, Mucho}. 
+S_5 = {Poco, Normal, Bastante, Mucho}
+S_7 = {Nada, Pobre, Regular, Normal, Mucho, Muchísimo, Impresionante}.
+El conjunto de etiquetas lingüísticas que engloban los conjuntos de entrada es
+S_13 = {Pésimo, Malo, Muy pobre, Pobre, Suficiente, Normal, Bueno, Muy bueno, Bastante, Satisfecho, Muy Satisfecho, Excelente, Impresionante}	
+
+####################################################################################
+Si desea consultar el informe de forma mas detallada se puede acceder a el con la siguiente liga:
+https://dimemas-ugr.es/reports/65a33eaf5e925/output/index.html
+
+####################################################################################
+NOTA: De forma adicional se adjuntan los informes de casos hipotéticos donde se puede consultar un informe a nivel proyecto, en el cual se muestra la información de los eventos que lo componen junto con cada una de las actividades.
+
