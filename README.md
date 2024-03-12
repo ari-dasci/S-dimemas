@@ -5,7 +5,7 @@ This program is designed to generate a ranking, based on evaluations given by th
 The evaluation of each event is given in linguistic scales, and the multimodal method is used to generate the rankings.
 
 ## Slogan
-![You not only attend, you also participate... so tell me more.](Use-case/Advertising information/slogan.png)
+![You not only attend, you also participate... so tell me more.](snapshots/slogan.png)
 
 ## DaSCI at NIGHTspain 2023
 We have use DIME+ with [NIGHTspain as case use](Use-case/DaSCI-Night23.md)
