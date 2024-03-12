@@ -3,7 +3,7 @@
 The design of DIME+ makes it intuitive to use, menus and buttons are visible and easy to identify. This section shows some elements of the website which you can consult at the following URL www.dimemas-ugr.es/.
 
 1 The >>front-end<< shows the main page of the DIME+ website, where you can consult information about events and activities.
-![DIME+ front-end view](./front-page.png)
+![DIME+ front-end view](./front-end.png)
 
 2 The >>back-end<< shows the main view of the DIME+ dashboard once you have logged in the system. It summarizes platfom data and also gives access to the management of information.
 ![DIME+ back-end view](./dashboard.png)
